@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Terminal Debug</title>
+<style>
+body { background: #080d14; color: #e2e8f0; font-family: monospace; margin: 20px; }
+#log { background: #0e1420; padding: 10px; margin: 10px 0; max-height: 400px; overflow-y: auto; font-size: 12px; border: 1px solid #334155; }
+#terminal { background: #000; padding: 10px; min-height: 200px; white-space: pre-wrap; font-size: 14px; border: 1px solid #22d3ee; outline: none; }
+button { background: #22d3ee; color: #080d14; border: none; padding: 8px 20px; cursor: pointer; font-family: monospace; font-size: 14px; margin: 5px; }
+.error { color: #ef4444; }
+.ok { color: #10b981; }
+.warn { color: #f59e0b; }
+</style>
+</head>
+<body>
+<h3>Terminal Debug Test</h3>
+<button onclick="startTerminal()">1. Create Session &amp; Connect</button>
+<button onclick="sendCmd()">2. Send 'whoami'</button>
+<p style="font-size:12px;color:#666">After connecting, click the black terminal area below and type. Check the log for WS messages.</p>
+<div id="log"></div>
+<div id="terminal" tabindex="0"></div>
+
+<script>
+const API = 'http://127.0.0.1:8080';
+const AGENT_ID = '15bd0362-cf86-48f9-ab84-78eb815f3900';
+let ws = null;
+const logEl = document.getElementById('log');
+const termEl = document.getElementById('terminal');
+
+function log(msg, cls) {
+    const d = document.createElement('div');
+    d.textContent = `[${new Date().toISOString().slice(11,23)}] ${msg}`;
+    if (cls) d.className = cls;
+    logEl.appendChild(d);
+    logEl.scrollTop = logEl.scrollHeight;
+    console.log(msg);
+}
+
+async function startTerminal() {
+    try {
+        // Get auth token
+        log('Logging in...');
+        const loginResp = await fetch(`${API}/api/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: 'fox3', password: 'fox3' })
+        });
+        const { token } = await loginResp.json();
+        log('Login OK', 'ok');
+
+        // Create terminal session
+        log(`Creating terminal for agent ${AGENT_ID}...`);
+        const termResp = await fetch(`${API}/api/terminal`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify({ agent_id: AGENT_ID, shell: 'cmd', cols: 120, rows: 40 })
+        });
+        const termData = await termResp.json();
+        log(`Session created: ${termData.session_id}`, 'ok');
+        log(`Browser WS path: ${termData.browser_ws}`);
+
+        // Wait for agent to process the job
+        log('Waiting 6s for agent to start PTY...');
+        await new Promise(r => setTimeout(r, 6000));
+
+        // Connect WebSocket
+        const wsUrl = `ws://127.0.0.1:8080${termData.browser_ws}`;
+        log(`Connecting WS to: ${wsUrl}`);
+        ws = new WebSocket(wsUrl);
+        ws.binaryType = 'arraybuffer';
+
+        ws.onopen = () => {
+            log('WS OPEN - connection established!', 'ok');
+            termEl.focus();
+        };
+
+        ws.onmessage = (evt) => {
+            let text;
+            if (evt.data instanceof ArrayBuffer) {
+                const arr = new Uint8Array(evt.data);
+                text = new TextDecoder().decode(arr);
+                log(`RECV ${arr.length} bytes: ${JSON.stringify(text.slice(0,120))}`, 'ok');
+            } else {
+                text = evt.data;
+                log(`RECV text: ${JSON.stringify(text.slice(0,120))}`, 'ok');
+            }
+            termEl.textContent += text;
+        };
+
+        ws.onclose = (e) => log(`WS CLOSED code=${e.code} reason="${e.reason}" clean=${e.wasClean}`, 'error');
+        ws.onerror = () => log('WS ERROR', 'error');
+
+    } catch (e) {
+        log(`ERROR: ${e.message}`, 'error');
+    }
+}
+
+function sendCmd() {
+    if (!ws || ws.readyState !== WebSocket.OPEN) {
+        log(`Cannot send: ws=${ws ? 'exists' : 'null'} readyState=${ws ? ws.readyState : 'N/A'}`, 'error');
+        return;
+    }
+    ws.send('whoami\r\n');
+    log('SENT: whoami\\r\\n', 'warn');
+}
+
+document.getElementById('terminal').addEventListener('keydown', (e) => {
+    if (!ws || ws.readyState !== WebSocket.OPEN) return;
+    let data = '';
+    if (e.key === 'Enter') data = '\r\n';
+    else if (e.key === 'Backspace') data = '\x7f';
+    else if (e.key.length === 1) data = e.key;
+    else return;
+    e.preventDefault();
+    log(`KEY: ${JSON.stringify(data)}`, 'warn');
+    ws.send(data);
+});
+</script>
+</body>
+</html>

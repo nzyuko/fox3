@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Missile body -->
+  <path d="M52 8 L56 12 L28 40 L20 44 L24 36 Z" fill="#b8bb26" stroke="#98971a" stroke-width="1.5"/>
+  <!-- Nose cone -->
+  <path d="M56 12 L60 4 L52 8 Z" fill="#d5c4a1"/>
+  <!-- Fins -->
+  <path d="M24 36 L16 40 L20 44 Z" fill="#98971a"/>
+  <path d="M28 40 L24 48 L20 44 Z" fill="#98971a"/>
+  <!-- Exhaust trail -->
+  <circle cx="14" cy="50" r="3" fill="#fabd2f" opacity="0.8"/>
+  <circle cx="10" cy="54" r="2.5" fill="#fb4934" opacity="0.6"/>
+  <circle cx="7" cy="57" r="2" fill="#fb4934" opacity="0.3"/>
+</svg>

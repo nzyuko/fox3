@@ -1,0 +1,19 @@
+
+### Pull Request (PR) Checklist
+- [ ] I have read the [CONTRIBUTING](./CONTRIBUTING.MD) doc
+- [ ] PR is from **a topic/feature/bugfix branch** off the **dev branch** (right side)
+- [ ] PR is against the **dev branch** (left side)
+- [ ] Fox3 compiles without errors
+- [ ] Passes linting checks and unit tests
+- [ ] Updated [CHANGELOG](./CHANGELOG.MD)
+- [ ] Updated README documentation (if applicable)
+- [ ] Update Fox3 version number in `pkg/fox3.go` (if applicable)
+
+### Change Type
+- [ ] Addition
+- [ ] Bugfix
+- [ ] Modification
+- [ ] Removal
+- [ ] Security
+
+### Description

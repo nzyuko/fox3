@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(go build ./...)",
+      "Bash(cargo build)",
+      "Bash(cmd.exe /c \"where node && where npm\")",
+      "Bash(ls /c/Users/null/fox3/fox3server*)",
+      "Bash(netstat -ano)",
+      "Bash(powershell -Command \"netstat -ano | findstr '':443''\")",
+      "Bash(powershell -Command \"netstat -ano | findstr '':443 ''\")",
+      "Bash(tasklist)",
+      "Bash(taskkill //PID 13024 //F)",
+      "Bash(ls -la *.log)",
+      "Bash(/c/Python313/python create_listener.py)",
+      "Bash(go build -o fox3_server .)",
+      "Bash(python3 -c \":*)",
+      "Bash(/c/Python313/python -c \":*)",
+      "Bash(/c/Python313/python -c \"import websockets; print\\(''websockets ok''\\)\")",
+      "Bash(/c/Python313/python -c \"import websocket; print\\(''websocket-client ok''\\)\")",
+      "Bash(/c/Python313/python -m pip install websocket-client -q)",
+      "Bash(/c/Python313/python test_terminal.py)",
+      "Bash(/c/Python313/python test_relay.py)",
+      "Bash(PYTHONIOENCODING=utf-8 /c/Python313/python test_relay.py)",
+      "Bash(wmic process where \"name=''simple_agent.exe''\" get commandline,processid)",
+      "Bash(netstat -aon)",
+      "Bash(powershell -Command \"Get-NetTCPConnection -LocalPort 443 -ErrorAction SilentlyContinue | Select-Object LocalAddress,LocalPort,OwningProcess\")",
+      "Bash(TOKEN=\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYWRtaW4iLCJleHAiOjE3NzI0Nzg3MzEsImlhdCI6MTc3MjM5MjMzMX0.EGjsZdwcMv2SJwhM4fkcgJOGbJZ40dP47hnRsmCFMA4\")",
+      "Bash(__NEW_LINE_6f9f01db6187857c__ curl -sk http://127.0.0.1:8080/api/listeners -H \"Authorization: Bearer $TOKEN\")",
+      "Bash(cargo build --release)"
+    ]
+  }
+}

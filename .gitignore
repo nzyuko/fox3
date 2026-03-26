@@ -1,0 +1,15 @@
+data/
+*.db
+*.exe
+*.o
+**/node_modules/
+**/vendor/
+**/__pycache__/
+*.log
+*.err
+.vscode/
+.idea/
+.DS_Store
+*.key
+*.pem
+.env

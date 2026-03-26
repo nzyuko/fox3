@@ -1,0 +1,109 @@
+name: "Fox3 Server Release"
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  release:
+    name: 'Release Job'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Fox3
+        id: checkout_fox3
+        uses: actions/checkout@v4
+
+      - name: Checkout Fox3-Agent
+        id: checkout_fox3_agent
+        run: git clone https://github.com/nzyuko/fox3-agent.git /home/runner/work/fox3-agent
+
+      - name: Checkout Fox3-Agent-DLL
+        id: checkout_fox3_agent_dll
+        run: git clone https://github.com/nzyuko/fox3-agent-dll.git /home/runner/work/fox3-agent-dll
+
+      - name: Checkout Fox3 CLI
+        id: checkout_fox3_cli
+        run: git clone https://github.com/nzyuko/fox3-cli.git /home/runner/work/fox3-cli
+
+      - name: Set up Go
+        id: setup_go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.24'
+
+        # Need 7zip installed to package up the release
+      - name: Install 7zip
+        id: install_7zip
+        run: sudo apt-get install p7zip-full
+
+        # Need MingGW installed to build the Agent DLL
+      - name: Install MingGW
+        id: install_mingw
+        run: sudo apt-get install -y -q mingw-w64 gcc-mingw-w64-i686
+
+      - name: Build Fox3 Agents
+        id: build_agents
+        working-directory: /home/runner/work/fox3-agent
+        run: |
+          VERSION=$(cat ./core/core.go |grep "var Version ="|cut -d"\"" -f2)
+          BUILD=$(git rev-parse HEAD)
+          DIR=bin/v${VERSION}/${BUILD}
+          make all
+          mv $DIR/fox3Agent-* .
+
+      - name: Build Fox3 Agent DLL
+        id: build_agent_dll
+        working-directory: /home/runner/work/fox3-agent-dll
+        run: make default 386
+
+      - name: Move Agents
+        id: move_agents
+        working-directory: /home/runner/work/fox3/fox3
+        run: |
+          mkdir -p data/bin
+          cp /home/runner/work/fox3-agent/fox3Agent-* ./data/bin
+          cp /home/runner/work/fox3-agent-dll/fox3* ./data/bin
+
+      - name: Build Fox3 CLI
+        id: build_cli
+        working-directory: /home/runner/work/fox3-cli
+        run: make release
+
+      - name: Move Fox3 CLI
+        id: move_cli
+        working-directory: /home/runner/work/fox3/fox3
+        run: |
+          cp /home/runner/work/fox3-cli/fox3CLI-* ./data/bin
+
+      - name: Build Fox3 Server
+        id: build_server
+        working-directory: /home/runner/work/fox3/fox3
+        run: make distro
+
+      - name: Package Release
+        id: package_release
+        working-directory: /home/runner/work/fox3/fox3
+        run: |
+          VERSION=$(cat pkg/fox3.go |grep "const Version ="|cut -d"\"" -f2)
+          BUILD=$(git rev-parse HEAD)
+          DIR=data/temp/v${VERSION}/${BUILD}
+          cp docs/CHANGELOG.MD .
+          cp $DIR/fox3Server* .
+          F="LICENSE data/modules CHANGELOG.MD data/README.MD data/agents/README.MD data/log/README.MD data/x509 data/src data/bin"
+          7za a -pfox3 -mhe -mx=9 fox3Server-Linux-x64.7z $F fox3Server-Linux-x64
+          7za a -pfox3 -mhe -mx=9 fox3Server-Darwin-x64.7z $F fox3Server-Darwin-x64
+          7za a -pfox3 -mhe -mx=9 fox3Server-Windows-x64.7z $F fox3Server-Windows-x64.exe
+
+      - name: Create Draft Release
+        id: create_draft_release
+        uses: ncipollo/release-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          draft: true
+          prerelease: false
+          artifactErrorsFailBuild: true
+          artifacts: '*.7z'

@@ -1,0 +1,122 @@
+package rest
+
+import (
+	"context"
+	"fmt"
+	"log/slog"
+	"net/http"
+	"strings"
+	"time"
+
+	"github.com/nzyuko/fox3/v2/pkg/pivot"
+	"github.com/nzyuko/fox3/v2/pkg/screenshots"
+	"github.com/nzyuko/fox3/v2/pkg/services/agent"
+	"github.com/nzyuko/fox3/v2/pkg/services/credentials"
+	"github.com/nzyuko/fox3/v2/pkg/services/job"
+	"github.com/nzyuko/fox3/v2/pkg/services/listeners"
+)
+
+// Server structure holds the services required for the API
+type Server struct {
+	ls                listeners.ListenerService
+	agentService      *agent.Service
+	jobService        *job.Service
+	credService       *credentials.Service
+	screenshotService *screenshots.Service
+	pivotService      *pivot.Service
+	password          string
+	httpServer        *http.Server
+}
+
+// NewRestServer creates a new Server instance
+func NewRestServer(password string) *Server {
+	return &Server{
+		ls:                listeners.NewListenerService(),
+		agentService:      agent.NewAgentService(),
+		jobService:        job.NewJobService(),
+		credService:       credentials.NewCredentialService(),
+		screenshotService: screenshots.NewService(),
+		pivotService:      pivot.NewService(),
+		password:          password,
+	}
+}
+
+// Shutdown gracefully stops the HTTP server with the given context deadline.
+func (s *Server) Shutdown(ctx context.Context) error {
+	if s.httpServer == nil {
+		return nil
+	}
+	return s.httpServer.Shutdown(ctx)
+}
+
+// corsMiddleware restricts cross-origin requests to localhost origins only.
+func corsMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		origin := r.Header.Get("Origin")
+		if origin != "" && !isLocalhostOrigin(origin) {
+			http.Error(w, "CORS: origin not allowed", http.StatusForbidden)
+			return
+		}
+		if origin != "" {
+			w.Header().Set("Access-Control-Allow-Origin", origin)
+		}
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		w.Header().Set("Vary", "Origin")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		next.ServeHTTP(w, r)
+	})
+}
+
+// isLocalhostOrigin returns true when the origin host is 127.0.0.1 or localhost.
+func isLocalhostOrigin(origin string) bool {
+	host := origin
+	if idx := strings.Index(host, "://"); idx != -1 {
+		host = host[idx+3:]
+	}
+	if idx := strings.LastIndex(host, ":"); idx != -1 {
+		host = host[:idx]
+	}
+	return host == "127.0.0.1" || host == "localhost" || host == "::1"
+}
+
+// Run starts the API server and blocks until it stops.
+// Only login (HTTP) and WebSocket are exposed — all operations go through WS.
+func (s *Server) Run(addr string) error {
+	slog.Log(context.Background(), slog.LevelDebug, "starting API server")
+
+	mux := http.NewServeMux()
+
+	// Public: login (returns JWT for WS auth)
+	mux.HandleFunc("/api/login", s.LoginHandler)
+
+	// Protected: WebSocket only
+	apiMux := http.NewServeMux()
+	hub := newWSHub(s)
+	go hub.run()
+	apiMux.HandleFunc("/api/ws", hub.ServeWS)
+
+	mux.Handle("/api/", AuthMiddleware(apiMux))
+
+	handler := corsMiddleware(mux)
+
+	s.httpServer = &http.Server{
+		Addr:         addr,
+		Handler:      handler,
+		ReadTimeout:  0, // WebSocket streams must stay open
+		WriteTimeout: 0,
+		IdleTimeout:  120 * time.Second,
+	}
+
+	slog.Info(fmt.Sprintf("API server listening on %s (WS-only)", addr))
+	err := s.httpServer.ListenAndServe()
+	if err == http.ErrServerClosed {
+		return nil
+	}
+	return err
+}

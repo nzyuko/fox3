@@ -1,0 +1,90 @@
+[package]
+name = "simple_agent"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# HTTP client (blocking, rustls — no openssl dep)
+reqwest = { version = "0.12", features = ["blocking", "rustls-tls"], default-features = false }
+
+# JSON
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Pure-Rust JOSE — no OpenSSL dependency
+aes-gcm = "0.10"      # AES-256-GCM content encryption
+aes-kw = "0.2"        # RFC 3394 AES key wrap (PBES2 key wrap step)
+pbkdf2 = "0.12"       # PBKDF2 for PBES2 key derivation
+hmac = "0.12"         # HMAC for HS256 JWT signing and PBKDF2
+sha2 = "0.10"         # SHA-256 (PSK hashing) and SHA-512 (PBKDF2 PRF)
+base64 = "0.22"       # Base64url encoding for JWE/JWS compact serialization
+
+# UUID
+uuid = { version = "1", features = ["v4", "serde"] }
+
+# Random padding
+rand = "0.8"
+
+# CLI args
+clap = { version = "4", features = ["derive"] }
+
+# Error handling
+anyhow = "1"
+
+# URL parsing (proxy support)
+url = "2"
+
+# WebSocket (for interactive terminal relay + WSS beacon transport)
+tungstenite = { version = "0.24", features = ["handshake", "rustls-tls-webpki-roots"], default-features = false }
+
+# TLS (needed for custom cert verifier in WSS transport)
+rustls = "0.23"
+
+# File hashing (cross-platform, RustCrypto family)
+md-5 = "0.10"
+sha-1 = "0.10"
+# sha2 already above
+
+# Digest trait (needed for generic hash_file helper)
+digest = "0.10"
+
+# MD4 for NTLM/RC4-HMAC Kerberos key computation
+md4 = "0.10"
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.59", features = [
+    "Win32_NetworkManagement_NetManagement",
+    "Win32_NetworkManagement_IpHelper",
+    "Win32_NetworkManagement_WNet",
+    "Win32_System_Services",
+    "Win32_System_Registry",
+    "Win32_Security",
+    "Win32_Security_Authorization",
+    "Win32_Security_Credentials",
+    "Win32_System_Threading",
+    "Win32_System_Diagnostics_Debug",
+    "Win32_System_Diagnostics_ToolHelp",
+    "Win32_System_ProcessStatus",
+    "Win32_Foundation",
+    "Win32_UI_WindowsAndMessaging",
+    "Win32_System_SystemInformation",
+    "Win32_System_Memory",
+    "Win32_System_LibraryLoader",
+    "Win32_System_Com",
+    "Win32_System_RemoteDesktop",
+    "Win32_Storage_FileSystem",
+    "Win32_NetworkManagement_Dns",
+    "Win32_System_Shutdown",
+    "Win32_Globalization",
+    "Win32_System_Time",
+    "Win32_System_SystemServices",
+    "Win32_Networking_WinSock",
+] }
+
+[[bin]]
+name = "test_commands"
+path = "src/bin/test_commands.rs"
+
+[profile.release]
+opt-level = "z"
+strip = true
