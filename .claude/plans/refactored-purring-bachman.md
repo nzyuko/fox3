@@ -51,10 +51,13 @@ github.com/nzyuko/fox3_agent   → fox3_core (calling engine + injector) + fox3_
    cd fox3_agent/fox3_agent_pic && cargo build --release --features pic --lib
    cd fox3 && go build -o fox3_server.exe .
    ```
-5. Install Vagrant + Ansible for lab provisioning:
+5. Install Vagrant, Ansible, hashcat:
    ```powershell
    winget install Hashicorp.Vagrant
    pip install ansible pywinrm
+   # Hashcat (GPU cracking) — download from https://hashcat.net/hashcat/
+   # Extract to C:\tools\hashcat, add to PATH
+   # Verify: hashcat -b -m 13100 (krb5tgs benchmark)
    ```
 
 ---
@@ -137,7 +140,7 @@ fox3_agent_pic/src/
 
 ## Phase 3: Lab Environment Setup (Parallel with Phase 2)
 
-### Hardware Budget (28 cores / 56 threads / 32GB RAM)
+### Hardware Budget (28 cores / 56 threads / 32GB RAM / RTX 3060 Ti 8GB)
 
 | VM | vCPU | RAM | Role | OS |
 |----|------|-----|------|----|
@@ -147,8 +150,12 @@ fox3_agent_pic/src/
 | WS01 | 4 | 4GB | Workstation (target, EDR agent) | Win 11 Enterprise |
 | WS02 | 2 | 2GB | Workstation (lateral target) | Win 10 Enterprise |
 | EDR-SRV | 4 | 6GB | Elastic Stack (ES + Kibana + Fleet) | Ubuntu 22.04 |
-| HOST | 8+ | 12GB+ | Fox3 server + Claude Code + build | Win 11 (bare metal) |
+| HOST | 8+ | 12GB+ | Fox3 server + Claude Code + build + GPU | Win 11 (bare metal) |
 | **Total VMs** | **18** | **20GB** | | |
+
+**GPU (RTX 3060 Ti 8GB)**:
+- **Hashcat**: Offline password cracking for Kerberoasting/AS-REP roasting (~25 GH/s NTLM, ~750 KH/s krb5tgs RC4). Integrated into playbook `post: offline_crack` steps.
+- **Local LLM fallback**: For high-frequency deterministic MCP steps (Qwen 2.5 7B Q8 or similar). Reduces API cost during long automated runs. Claude API for decision points only.
 
 ### Environment Tiers (Progressive Hardening)
 
