@@ -457,15 +457,15 @@ func (s *Service) Add(agentID uuid.UUID, jobType string, jobArgs []string) (stri
 			Command: "screenshot",
 		}
 	default:
-		return "", fmt.Errorf("unknown command: %q. Valid commands:\n"+
-			"  Info:      agentInfo, ps, netstat, uptime, memory, ifconfig, nslookup, env, pipes, ls, pwd\n"+
-			"  Exec:      shell, run, exec, runas, CreateProcess\n"+
-			"  Files:     upload, download, cd, rm, touch, sdelete\n"+
-			"  Control:   sleep, killdate, maxretry, padding, skew, exit, ja3, parrot\n"+
-			"  Modules:   link, unlink, listener, load-assembly, invoke-assembly, list-assemblies, load-clr, memfd, Minidump, shellcode, ssh, token\n"+
-			"  Network:   sock_start, sock_stop, rportfwd_start, rportfwd_stop\n"+
-			"  Special:   hvnc_start, hvnc_stop, screenshot\n"+
-			"  Help:      Use 'help' on the agent for the full built-in command list", jobType)
+		// Pass unrecognized commands to the agent as JOB_NATIVE.
+		// The PIC agent has 100+ native commands (whoami, arp, reg_query,
+		// sc_enum, krb_klist, etc.) that are dispatched agent-side.
+		// Type 'help' to see the full list from the agent.
+		job.Type = jobs.NATIVE
+		job.Payload = jobs.Command{
+			Command: jobType,
+			Args:    jobArgs,
+		}
 	}
 
 	return s.AddJobChannel(agentID, &job, jobArgs)
