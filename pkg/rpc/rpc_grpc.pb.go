@@ -15,10 +15,10 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// MerlinClient is the client API for Merlin service.
+// Fox3Client is the client API for Fox3 service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type MerlinClient interface {
+type Fox3Client interface {
 	Reconnect(ctx context.Context, in *ID, opts ...grpc.CallOption) (*ID, error)
 	Register(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ID, error)
 	Listen(ctx context.Context, in *ID, opts ...grpc.CallOption) (Fox3_ListenClient, error)
@@ -111,13 +111,13 @@ type fox3Client struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewMerlinClient(cc grpc.ClientConnInterface) MerlinClient {
+func NewFox3Client(cc grpc.ClientConnInterface) Fox3Client {
 	return &fox3Client{cc}
 }
 
 func (c *fox3Client) Reconnect(ctx context.Context, in *ID, opts ...grpc.CallOption) (*ID, error) {
 	out := new(ID)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/Reconnect", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/Reconnect", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -126,7 +126,7 @@ func (c *fox3Client) Reconnect(ctx context.Context, in *ID, opts ...grpc.CallOpt
 
 func (c *fox3Client) Register(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ID, error) {
 	out := new(ID)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/Register", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/Register", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -134,7 +134,7 @@ func (c *fox3Client) Register(ctx context.Context, in *emptypb.Empty, opts ...gr
 }
 
 func (c *fox3Client) Listen(ctx context.Context, in *ID, opts ...grpc.CallOption) (Fox3_ListenClient, error) {
-	stream, err := c.cc.NewStream(ctx, &Fox3_ServiceDesc.Streams[0], "/rpc.Merlin/Listen", opts...)
+	stream, err := c.cc.NewStream(ctx, &Fox3_ServiceDesc.Streams[0], "/rpc.Fox3/Listen", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -167,7 +167,7 @@ func (x *fox3ListenClient) Recv() (*Message, error) {
 
 func (c *fox3Client) Any(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/Any", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/Any", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -176,7 +176,7 @@ func (c *fox3Client) Any(ctx context.Context, in *AgentCMD, opts ...grpc.CallOpt
 
 func (c *fox3Client) CD(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/CD", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/CD", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -185,7 +185,7 @@ func (c *fox3Client) CD(ctx context.Context, in *AgentCMD, opts ...grpc.CallOpti
 
 func (c *fox3Client) CheckIn(ctx context.Context, in *ID, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/CheckIn", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/CheckIn", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -194,7 +194,7 @@ func (c *fox3Client) CheckIn(ctx context.Context, in *ID, opts ...grpc.CallOptio
 
 func (c *fox3Client) ClearJobs(ctx context.Context, in *ID, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/ClearJobs", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/ClearJobs", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -203,7 +203,7 @@ func (c *fox3Client) ClearJobs(ctx context.Context, in *ID, opts ...grpc.CallOpt
 
 func (c *fox3Client) ClearJobsCreated(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/ClearJobsCreated", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/ClearJobsCreated", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -212,7 +212,7 @@ func (c *fox3Client) ClearJobsCreated(ctx context.Context, in *emptypb.Empty, op
 
 func (c *fox3Client) CMD(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/CMD", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/CMD", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -221,7 +221,7 @@ func (c *fox3Client) CMD(ctx context.Context, in *AgentCMD, opts ...grpc.CallOpt
 
 func (c *fox3Client) Connect(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/Connect", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/Connect", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -230,7 +230,7 @@ func (c *fox3Client) Connect(ctx context.Context, in *AgentCMD, opts ...grpc.Cal
 
 func (c *fox3Client) Download(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/Download", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/Download", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -239,7 +239,7 @@ func (c *fox3Client) Download(ctx context.Context, in *AgentCMD, opts ...grpc.Ca
 
 func (c *fox3Client) ENV(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/ENV", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/ENV", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -248,7 +248,7 @@ func (c *fox3Client) ENV(ctx context.Context, in *AgentCMD, opts ...grpc.CallOpt
 
 func (c *fox3Client) ExecuteAssembly(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/ExecuteAssembly", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/ExecuteAssembly", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -257,7 +257,7 @@ func (c *fox3Client) ExecuteAssembly(ctx context.Context, in *AgentCMD, opts ...
 
 func (c *fox3Client) ExecutePE(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/ExecutePE", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/ExecutePE", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -266,7 +266,7 @@ func (c *fox3Client) ExecutePE(ctx context.Context, in *AgentCMD, opts ...grpc.C
 
 func (c *fox3Client) ExecuteShellcode(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/ExecuteShellcode", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/ExecuteShellcode", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -275,7 +275,7 @@ func (c *fox3Client) ExecuteShellcode(ctx context.Context, in *AgentCMD, opts ..
 
 func (c *fox3Client) Exit(ctx context.Context, in *ID, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/Exit", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/Exit", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -284,7 +284,7 @@ func (c *fox3Client) Exit(ctx context.Context, in *ID, opts ...grpc.CallOption) 
 
 func (c *fox3Client) IFConfig(ctx context.Context, in *ID, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/IFConfig", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/IFConfig", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -293,7 +293,7 @@ func (c *fox3Client) IFConfig(ctx context.Context, in *ID, opts ...grpc.CallOpti
 
 func (c *fox3Client) InvokeAssembly(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/InvokeAssembly", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/InvokeAssembly", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -302,7 +302,7 @@ func (c *fox3Client) InvokeAssembly(ctx context.Context, in *AgentCMD, opts ...g
 
 func (c *fox3Client) JA3(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/JA3", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/JA3", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -311,7 +311,7 @@ func (c *fox3Client) JA3(ctx context.Context, in *AgentCMD, opts ...grpc.CallOpt
 
 func (c *fox3Client) KillDate(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/KillDate", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/KillDate", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -320,7 +320,7 @@ func (c *fox3Client) KillDate(ctx context.Context, in *AgentCMD, opts ...grpc.Ca
 
 func (c *fox3Client) KillProcess(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/KillProcess", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/KillProcess", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -329,7 +329,7 @@ func (c *fox3Client) KillProcess(ctx context.Context, in *AgentCMD, opts ...grpc
 
 func (c *fox3Client) LinkAgent(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/LinkAgent", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/LinkAgent", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -338,7 +338,7 @@ func (c *fox3Client) LinkAgent(ctx context.Context, in *AgentCMD, opts ...grpc.C
 
 func (c *fox3Client) ListAssemblies(ctx context.Context, in *ID, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/ListAssemblies", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/ListAssemblies", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -347,7 +347,7 @@ func (c *fox3Client) ListAssemblies(ctx context.Context, in *ID, opts ...grpc.Ca
 
 func (c *fox3Client) Listener(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/Listener", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/Listener", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -356,7 +356,7 @@ func (c *fox3Client) Listener(ctx context.Context, in *AgentCMD, opts ...grpc.Ca
 
 func (c *fox3Client) LoadAssembly(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/LoadAssembly", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/LoadAssembly", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -365,7 +365,7 @@ func (c *fox3Client) LoadAssembly(ctx context.Context, in *AgentCMD, opts ...grp
 
 func (c *fox3Client) LoadCLR(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/LoadCLR", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/LoadCLR", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -374,7 +374,7 @@ func (c *fox3Client) LoadCLR(ctx context.Context, in *AgentCMD, opts ...grpc.Cal
 
 func (c *fox3Client) LS(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/LS", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/LS", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -383,7 +383,7 @@ func (c *fox3Client) LS(ctx context.Context, in *AgentCMD, opts ...grpc.CallOpti
 
 func (c *fox3Client) MaxRetry(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/MaxRetry", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/MaxRetry", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -392,7 +392,7 @@ func (c *fox3Client) MaxRetry(ctx context.Context, in *AgentCMD, opts ...grpc.Ca
 
 func (c *fox3Client) Memory(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/Memory", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/Memory", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -401,7 +401,7 @@ func (c *fox3Client) Memory(ctx context.Context, in *AgentCMD, opts ...grpc.Call
 
 func (c *fox3Client) MEMFD(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/MEMFD", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/MEMFD", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -410,7 +410,7 @@ func (c *fox3Client) MEMFD(ctx context.Context, in *AgentCMD, opts ...grpc.CallO
 
 func (c *fox3Client) Netstat(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/Netstat", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/Netstat", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -419,7 +419,7 @@ func (c *fox3Client) Netstat(ctx context.Context, in *AgentCMD, opts ...grpc.Cal
 
 func (c *fox3Client) Note(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/Note", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/Note", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -428,7 +428,7 @@ func (c *fox3Client) Note(ctx context.Context, in *AgentCMD, opts ...grpc.CallOp
 
 func (c *fox3Client) Nslookup(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/Nslookup", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/Nslookup", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -437,7 +437,7 @@ func (c *fox3Client) Nslookup(ctx context.Context, in *AgentCMD, opts ...grpc.Ca
 
 func (c *fox3Client) Padding(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/Padding", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/Padding", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -446,7 +446,7 @@ func (c *fox3Client) Padding(ctx context.Context, in *AgentCMD, opts ...grpc.Cal
 
 func (c *fox3Client) Parrot(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/Parrot", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/Parrot", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -455,7 +455,7 @@ func (c *fox3Client) Parrot(ctx context.Context, in *AgentCMD, opts ...grpc.Call
 
 func (c *fox3Client) Pipes(ctx context.Context, in *ID, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/Pipes", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/Pipes", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -464,7 +464,7 @@ func (c *fox3Client) Pipes(ctx context.Context, in *ID, opts ...grpc.CallOption)
 
 func (c *fox3Client) PS(ctx context.Context, in *ID, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/PS", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/PS", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -473,7 +473,7 @@ func (c *fox3Client) PS(ctx context.Context, in *ID, opts ...grpc.CallOption) (*
 
 func (c *fox3Client) PWD(ctx context.Context, in *ID, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/PWD", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/PWD", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -482,7 +482,7 @@ func (c *fox3Client) PWD(ctx context.Context, in *ID, opts ...grpc.CallOption) (
 
 func (c *fox3Client) RM(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/RM", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/RM", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -491,7 +491,7 @@ func (c *fox3Client) RM(ctx context.Context, in *AgentCMD, opts ...grpc.CallOpti
 
 func (c *fox3Client) RunAs(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/RunAs", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/RunAs", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -500,7 +500,7 @@ func (c *fox3Client) RunAs(ctx context.Context, in *AgentCMD, opts ...grpc.CallO
 
 func (c *fox3Client) SecureDelete(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/SecureDelete", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/SecureDelete", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -509,7 +509,7 @@ func (c *fox3Client) SecureDelete(ctx context.Context, in *AgentCMD, opts ...grp
 
 func (c *fox3Client) SharpGen(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/SharpGen", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/SharpGen", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -518,7 +518,7 @@ func (c *fox3Client) SharpGen(ctx context.Context, in *AgentCMD, opts ...grpc.Ca
 
 func (c *fox3Client) Skew(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/Skew", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/Skew", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -527,7 +527,7 @@ func (c *fox3Client) Skew(ctx context.Context, in *AgentCMD, opts ...grpc.CallOp
 
 func (c *fox3Client) Sleep(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/Sleep", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/Sleep", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -536,7 +536,7 @@ func (c *fox3Client) Sleep(ctx context.Context, in *AgentCMD, opts ...grpc.CallO
 
 func (c *fox3Client) Socks(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/Socks", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/Socks", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -545,7 +545,7 @@ func (c *fox3Client) Socks(ctx context.Context, in *AgentCMD, opts ...grpc.CallO
 
 func (c *fox3Client) SSH(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/SSH", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/SSH", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -554,7 +554,7 @@ func (c *fox3Client) SSH(ctx context.Context, in *AgentCMD, opts ...grpc.CallOpt
 
 func (c *fox3Client) Token(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/Token", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/Token", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -563,7 +563,7 @@ func (c *fox3Client) Token(ctx context.Context, in *AgentCMD, opts ...grpc.CallO
 
 func (c *fox3Client) Touch(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/Touch", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/Touch", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -572,7 +572,7 @@ func (c *fox3Client) Touch(ctx context.Context, in *AgentCMD, opts ...grpc.CallO
 
 func (c *fox3Client) UnlinkAgent(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/UnlinkAgent", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/UnlinkAgent", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -581,7 +581,7 @@ func (c *fox3Client) UnlinkAgent(ctx context.Context, in *AgentCMD, opts ...grpc
 
 func (c *fox3Client) Upload(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/Upload", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/Upload", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -590,7 +590,7 @@ func (c *fox3Client) Upload(ctx context.Context, in *AgentCMD, opts ...grpc.Call
 
 func (c *fox3Client) Uptime(ctx context.Context, in *ID, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/Uptime", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/Uptime", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -599,7 +599,7 @@ func (c *fox3Client) Uptime(ctx context.Context, in *ID, opts ...grpc.CallOption
 
 func (c *fox3Client) Groups(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Slice, error) {
 	out := new(Slice)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/Groups", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/Groups", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -608,7 +608,7 @@ func (c *fox3Client) Groups(ctx context.Context, in *emptypb.Empty, opts ...grpc
 
 func (c *fox3Client) GroupAdd(ctx context.Context, in *Group, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/GroupAdd", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/GroupAdd", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -617,7 +617,7 @@ func (c *fox3Client) GroupAdd(ctx context.Context, in *Group, opts ...grpc.CallO
 
 func (c *fox3Client) GroupList(ctx context.Context, in *ID, opts ...grpc.CallOption) (*Slice, error) {
 	out := new(Slice)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/GroupList", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/GroupList", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -626,7 +626,7 @@ func (c *fox3Client) GroupList(ctx context.Context, in *ID, opts ...grpc.CallOpt
 
 func (c *fox3Client) GroupListAll(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GroupMembers, error) {
 	out := new(GroupMembers)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/GroupListAll", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/GroupListAll", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -635,7 +635,7 @@ func (c *fox3Client) GroupListAll(ctx context.Context, in *emptypb.Empty, opts .
 
 func (c *fox3Client) GroupRemove(ctx context.Context, in *Group, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/GroupRemove", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/GroupRemove", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -644,7 +644,7 @@ func (c *fox3Client) GroupRemove(ctx context.Context, in *Group, opts ...grpc.Ca
 
 func (c *fox3Client) GetAgent(ctx context.Context, in *ID, opts ...grpc.CallOption) (*AgentInfo, error) {
 	out := new(AgentInfo)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/GetAgent", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/GetAgent", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -653,7 +653,7 @@ func (c *fox3Client) GetAgent(ctx context.Context, in *ID, opts ...grpc.CallOpti
 
 func (c *fox3Client) GetAgents(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Slice, error) {
 	out := new(Slice)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/GetAgents", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/GetAgents", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -662,7 +662,7 @@ func (c *fox3Client) GetAgents(ctx context.Context, in *emptypb.Empty, opts ...g
 
 func (c *fox3Client) GetAgentLinks(ctx context.Context, in *ID, opts ...grpc.CallOption) (*Slice, error) {
 	out := new(Slice)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/GetAgentLinks", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/GetAgentLinks", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -671,7 +671,7 @@ func (c *fox3Client) GetAgentLinks(ctx context.Context, in *ID, opts ...grpc.Cal
 
 func (c *fox3Client) GetAgentStatus(ctx context.Context, in *ID, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/GetAgentStatus", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/GetAgentStatus", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -680,7 +680,7 @@ func (c *fox3Client) GetAgentStatus(ctx context.Context, in *ID, opts ...grpc.Ca
 
 func (c *fox3Client) GetAgentRows(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*TableData, error) {
 	out := new(TableData)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/GetAgentRows", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/GetAgentRows", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -689,7 +689,7 @@ func (c *fox3Client) GetAgentRows(ctx context.Context, in *emptypb.Empty, opts .
 
 func (c *fox3Client) Remove(ctx context.Context, in *ID, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/Remove", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/Remove", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -698,7 +698,7 @@ func (c *fox3Client) Remove(ctx context.Context, in *ID, opts ...grpc.CallOption
 
 func (c *fox3Client) GetAllJobs(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Jobs, error) {
 	out := new(Jobs)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/GetAllJobs", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/GetAllJobs", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -707,7 +707,7 @@ func (c *fox3Client) GetAllJobs(ctx context.Context, in *emptypb.Empty, opts ...
 
 func (c *fox3Client) GetAllActiveJobs(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Jobs, error) {
 	out := new(Jobs)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/GetAllActiveJobs", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/GetAllActiveJobs", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -716,7 +716,7 @@ func (c *fox3Client) GetAllActiveJobs(ctx context.Context, in *emptypb.Empty, op
 
 func (c *fox3Client) GetAgentJobs(ctx context.Context, in *ID, opts ...grpc.CallOption) (*Jobs, error) {
 	out := new(Jobs)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/GetAgentJobs", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/GetAgentJobs", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -725,7 +725,7 @@ func (c *fox3Client) GetAgentJobs(ctx context.Context, in *ID, opts ...grpc.Call
 
 func (c *fox3Client) GetAgentActiveJobs(ctx context.Context, in *ID, opts ...grpc.CallOption) (*Jobs, error) {
 	out := new(Jobs)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/GetAgentActiveJobs", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/GetAgentActiveJobs", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -734,7 +734,7 @@ func (c *fox3Client) GetAgentActiveJobs(ctx context.Context, in *ID, opts ...grp
 
 func (c *fox3Client) CreateListener(ctx context.Context, in *Options, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/CreateListener", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/CreateListener", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -743,7 +743,7 @@ func (c *fox3Client) CreateListener(ctx context.Context, in *Options, opts ...gr
 
 func (c *fox3Client) GetListenerIDs(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Slice, error) {
 	out := new(Slice)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/GetListenerIDs", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/GetListenerIDs", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -752,7 +752,7 @@ func (c *fox3Client) GetListenerIDs(ctx context.Context, in *emptypb.Empty, opts
 
 func (c *fox3Client) GetListeners(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*TableData, error) {
 	out := new(TableData)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/GetListeners", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/GetListeners", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -761,7 +761,7 @@ func (c *fox3Client) GetListeners(ctx context.Context, in *emptypb.Empty, opts .
 
 func (c *fox3Client) GetListenerOptions(ctx context.Context, in *ID, opts ...grpc.CallOption) (*Options, error) {
 	out := new(Options)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/GetListenerOptions", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/GetListenerOptions", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -770,7 +770,7 @@ func (c *fox3Client) GetListenerOptions(ctx context.Context, in *ID, opts ...grp
 
 func (c *fox3Client) GetListenerDefaultOptions(ctx context.Context, in *String, opts ...grpc.CallOption) (*Options, error) {
 	out := new(Options)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/GetListenerDefaultOptions", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/GetListenerDefaultOptions", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -779,7 +779,7 @@ func (c *fox3Client) GetListenerDefaultOptions(ctx context.Context, in *String, 
 
 func (c *fox3Client) GetListenerTypes(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Slice, error) {
 	out := new(Slice)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/GetListenerTypes", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/GetListenerTypes", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -788,7 +788,7 @@ func (c *fox3Client) GetListenerTypes(ctx context.Context, in *emptypb.Empty, op
 
 func (c *fox3Client) GetListenerStatus(ctx context.Context, in *ID, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/GetListenerStatus", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/GetListenerStatus", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -797,7 +797,7 @@ func (c *fox3Client) GetListenerStatus(ctx context.Context, in *ID, opts ...grpc
 
 func (c *fox3Client) RemoveListener(ctx context.Context, in *ID, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/RemoveListener", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/RemoveListener", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -806,7 +806,7 @@ func (c *fox3Client) RemoveListener(ctx context.Context, in *ID, opts ...grpc.Ca
 
 func (c *fox3Client) RestartListener(ctx context.Context, in *ID, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/RestartListener", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/RestartListener", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -815,7 +815,7 @@ func (c *fox3Client) RestartListener(ctx context.Context, in *ID, opts ...grpc.C
 
 func (c *fox3Client) SetListenerOption(ctx context.Context, in *AgentCMD, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/SetListenerOption", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/SetListenerOption", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -824,7 +824,7 @@ func (c *fox3Client) SetListenerOption(ctx context.Context, in *AgentCMD, opts .
 
 func (c *fox3Client) StartListener(ctx context.Context, in *ID, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/StartListener", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/StartListener", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -833,7 +833,7 @@ func (c *fox3Client) StartListener(ctx context.Context, in *ID, opts ...grpc.Cal
 
 func (c *fox3Client) StopListener(ctx context.Context, in *ID, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/StopListener", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/StopListener", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -842,7 +842,7 @@ func (c *fox3Client) StopListener(ctx context.Context, in *ID, opts ...grpc.Call
 
 func (c *fox3Client) Servers(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Slice, error) {
 	out := new(Slice)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/Servers", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/Servers", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -851,7 +851,7 @@ func (c *fox3Client) Servers(ctx context.Context, in *emptypb.Empty, opts ...grp
 
 func (c *fox3Client) GetModule(ctx context.Context, in *String, opts ...grpc.CallOption) (*Module, error) {
 	out := new(Module)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/GetModule", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/GetModule", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -860,7 +860,7 @@ func (c *fox3Client) GetModule(ctx context.Context, in *String, opts ...grpc.Cal
 
 func (c *fox3Client) GetModuleList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Slice, error) {
 	out := new(Slice)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/GetModuleList", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/GetModuleList", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -869,17 +869,17 @@ func (c *fox3Client) GetModuleList(ctx context.Context, in *emptypb.Empty, opts 
 
 func (c *fox3Client) RunModule(ctx context.Context, in *ModuleRun, opts ...grpc.CallOption) (*Messages, error) {
 	out := new(Messages)
-	err := c.cc.Invoke(ctx, "/rpc.Merlin/RunModule", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rpc.Fox3/RunModule", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// MerlinServer is the server API for Merlin service.
-// All implementations must embed UnimplementedMerlinServer
+// Fox3Server is the server API for Fox3 service.
+// All implementations must embed UnimplementedFox3Server
 // for forward compatibility
-type MerlinServer interface {
+type Fox3Server interface {
 	Reconnect(context.Context, *ID) (*ID, error)
 	Register(context.Context, *emptypb.Empty) (*ID, error)
 	Listen(*ID, Fox3_ListenServer) error
@@ -966,269 +966,269 @@ type MerlinServer interface {
 	GetModule(context.Context, *String) (*Module, error)
 	GetModuleList(context.Context, *emptypb.Empty) (*Slice, error)
 	RunModule(context.Context, *ModuleRun) (*Messages, error)
-	mustEmbedUnimplementedMerlinServer()
+	mustEmbedUnimplementedFox3Server()
 }
 
-// UnimplementedMerlinServer must be embedded to have forward compatible implementations.
-type UnimplementedMerlinServer struct {
+// UnimplementedFox3Server must be embedded to have forward compatible implementations.
+type UnimplementedFox3Server struct {
 }
 
-func (UnimplementedMerlinServer) Reconnect(context.Context, *ID) (*ID, error) {
+func (UnimplementedFox3Server) Reconnect(context.Context, *ID) (*ID, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Reconnect not implemented")
 }
-func (UnimplementedMerlinServer) Register(context.Context, *emptypb.Empty) (*ID, error) {
+func (UnimplementedFox3Server) Register(context.Context, *emptypb.Empty) (*ID, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Register not implemented")
 }
-func (UnimplementedMerlinServer) Listen(*ID, Fox3_ListenServer) error {
+func (UnimplementedFox3Server) Listen(*ID, Fox3_ListenServer) error {
 	return status.Errorf(codes.Unimplemented, "method Listen not implemented")
 }
-func (UnimplementedMerlinServer) Any(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) Any(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Any not implemented")
 }
-func (UnimplementedMerlinServer) CD(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) CD(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CD not implemented")
 }
-func (UnimplementedMerlinServer) CheckIn(context.Context, *ID) (*Message, error) {
+func (UnimplementedFox3Server) CheckIn(context.Context, *ID) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckIn not implemented")
 }
-func (UnimplementedMerlinServer) ClearJobs(context.Context, *ID) (*Message, error) {
+func (UnimplementedFox3Server) ClearJobs(context.Context, *ID) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ClearJobs not implemented")
 }
-func (UnimplementedMerlinServer) ClearJobsCreated(context.Context, *emptypb.Empty) (*Message, error) {
+func (UnimplementedFox3Server) ClearJobsCreated(context.Context, *emptypb.Empty) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ClearJobsCreated not implemented")
 }
-func (UnimplementedMerlinServer) CMD(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) CMD(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CMD not implemented")
 }
-func (UnimplementedMerlinServer) Connect(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) Connect(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Connect not implemented")
 }
-func (UnimplementedMerlinServer) Download(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) Download(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Download not implemented")
 }
-func (UnimplementedMerlinServer) ENV(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) ENV(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ENV not implemented")
 }
-func (UnimplementedMerlinServer) ExecuteAssembly(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) ExecuteAssembly(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ExecuteAssembly not implemented")
 }
-func (UnimplementedMerlinServer) ExecutePE(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) ExecutePE(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ExecutePE not implemented")
 }
-func (UnimplementedMerlinServer) ExecuteShellcode(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) ExecuteShellcode(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ExecuteShellcode not implemented")
 }
-func (UnimplementedMerlinServer) Exit(context.Context, *ID) (*Message, error) {
+func (UnimplementedFox3Server) Exit(context.Context, *ID) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Exit not implemented")
 }
-func (UnimplementedMerlinServer) IFConfig(context.Context, *ID) (*Message, error) {
+func (UnimplementedFox3Server) IFConfig(context.Context, *ID) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method IFConfig not implemented")
 }
-func (UnimplementedMerlinServer) InvokeAssembly(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) InvokeAssembly(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method InvokeAssembly not implemented")
 }
-func (UnimplementedMerlinServer) JA3(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) JA3(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method JA3 not implemented")
 }
-func (UnimplementedMerlinServer) KillDate(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) KillDate(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method KillDate not implemented")
 }
-func (UnimplementedMerlinServer) KillProcess(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) KillProcess(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method KillProcess not implemented")
 }
-func (UnimplementedMerlinServer) LinkAgent(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) LinkAgent(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LinkAgent not implemented")
 }
-func (UnimplementedMerlinServer) ListAssemblies(context.Context, *ID) (*Message, error) {
+func (UnimplementedFox3Server) ListAssemblies(context.Context, *ID) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListAssemblies not implemented")
 }
-func (UnimplementedMerlinServer) Listener(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) Listener(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Listener not implemented")
 }
-func (UnimplementedMerlinServer) LoadAssembly(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) LoadAssembly(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LoadAssembly not implemented")
 }
-func (UnimplementedMerlinServer) LoadCLR(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) LoadCLR(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LoadCLR not implemented")
 }
-func (UnimplementedMerlinServer) LS(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) LS(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LS not implemented")
 }
-func (UnimplementedMerlinServer) MaxRetry(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) MaxRetry(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MaxRetry not implemented")
 }
-func (UnimplementedMerlinServer) Memory(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) Memory(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Memory not implemented")
 }
-func (UnimplementedMerlinServer) MEMFD(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) MEMFD(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MEMFD not implemented")
 }
-func (UnimplementedMerlinServer) Netstat(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) Netstat(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Netstat not implemented")
 }
-func (UnimplementedMerlinServer) Note(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) Note(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Note not implemented")
 }
-func (UnimplementedMerlinServer) Nslookup(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) Nslookup(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Nslookup not implemented")
 }
-func (UnimplementedMerlinServer) Padding(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) Padding(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Padding not implemented")
 }
-func (UnimplementedMerlinServer) Parrot(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) Parrot(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Parrot not implemented")
 }
-func (UnimplementedMerlinServer) Pipes(context.Context, *ID) (*Message, error) {
+func (UnimplementedFox3Server) Pipes(context.Context, *ID) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Pipes not implemented")
 }
-func (UnimplementedMerlinServer) PS(context.Context, *ID) (*Message, error) {
+func (UnimplementedFox3Server) PS(context.Context, *ID) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PS not implemented")
 }
-func (UnimplementedMerlinServer) PWD(context.Context, *ID) (*Message, error) {
+func (UnimplementedFox3Server) PWD(context.Context, *ID) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PWD not implemented")
 }
-func (UnimplementedMerlinServer) RM(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) RM(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RM not implemented")
 }
-func (UnimplementedMerlinServer) RunAs(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) RunAs(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RunAs not implemented")
 }
-func (UnimplementedMerlinServer) SecureDelete(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) SecureDelete(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SecureDelete not implemented")
 }
-func (UnimplementedMerlinServer) SharpGen(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) SharpGen(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SharpGen not implemented")
 }
-func (UnimplementedMerlinServer) Skew(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) Skew(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Skew not implemented")
 }
-func (UnimplementedMerlinServer) Sleep(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) Sleep(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Sleep not implemented")
 }
-func (UnimplementedMerlinServer) Socks(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) Socks(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Socks not implemented")
 }
-func (UnimplementedMerlinServer) SSH(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) SSH(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SSH not implemented")
 }
-func (UnimplementedMerlinServer) Token(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) Token(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Token not implemented")
 }
-func (UnimplementedMerlinServer) Touch(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) Touch(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Touch not implemented")
 }
-func (UnimplementedMerlinServer) UnlinkAgent(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) UnlinkAgent(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UnlinkAgent not implemented")
 }
-func (UnimplementedMerlinServer) Upload(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) Upload(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Upload not implemented")
 }
-func (UnimplementedMerlinServer) Uptime(context.Context, *ID) (*Message, error) {
+func (UnimplementedFox3Server) Uptime(context.Context, *ID) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Uptime not implemented")
 }
-func (UnimplementedMerlinServer) Groups(context.Context, *emptypb.Empty) (*Slice, error) {
+func (UnimplementedFox3Server) Groups(context.Context, *emptypb.Empty) (*Slice, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Groups not implemented")
 }
-func (UnimplementedMerlinServer) GroupAdd(context.Context, *Group) (*Message, error) {
+func (UnimplementedFox3Server) GroupAdd(context.Context, *Group) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GroupAdd not implemented")
 }
-func (UnimplementedMerlinServer) GroupList(context.Context, *ID) (*Slice, error) {
+func (UnimplementedFox3Server) GroupList(context.Context, *ID) (*Slice, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GroupList not implemented")
 }
-func (UnimplementedMerlinServer) GroupListAll(context.Context, *emptypb.Empty) (*GroupMembers, error) {
+func (UnimplementedFox3Server) GroupListAll(context.Context, *emptypb.Empty) (*GroupMembers, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GroupListAll not implemented")
 }
-func (UnimplementedMerlinServer) GroupRemove(context.Context, *Group) (*Message, error) {
+func (UnimplementedFox3Server) GroupRemove(context.Context, *Group) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GroupRemove not implemented")
 }
-func (UnimplementedMerlinServer) GetAgent(context.Context, *ID) (*AgentInfo, error) {
+func (UnimplementedFox3Server) GetAgent(context.Context, *ID) (*AgentInfo, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAgent not implemented")
 }
-func (UnimplementedMerlinServer) GetAgents(context.Context, *emptypb.Empty) (*Slice, error) {
+func (UnimplementedFox3Server) GetAgents(context.Context, *emptypb.Empty) (*Slice, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAgents not implemented")
 }
-func (UnimplementedMerlinServer) GetAgentLinks(context.Context, *ID) (*Slice, error) {
+func (UnimplementedFox3Server) GetAgentLinks(context.Context, *ID) (*Slice, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAgentLinks not implemented")
 }
-func (UnimplementedMerlinServer) GetAgentStatus(context.Context, *ID) (*Message, error) {
+func (UnimplementedFox3Server) GetAgentStatus(context.Context, *ID) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAgentStatus not implemented")
 }
-func (UnimplementedMerlinServer) GetAgentRows(context.Context, *emptypb.Empty) (*TableData, error) {
+func (UnimplementedFox3Server) GetAgentRows(context.Context, *emptypb.Empty) (*TableData, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAgentRows not implemented")
 }
-func (UnimplementedMerlinServer) Remove(context.Context, *ID) (*Message, error) {
+func (UnimplementedFox3Server) Remove(context.Context, *ID) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Remove not implemented")
 }
-func (UnimplementedMerlinServer) GetAllJobs(context.Context, *emptypb.Empty) (*Jobs, error) {
+func (UnimplementedFox3Server) GetAllJobs(context.Context, *emptypb.Empty) (*Jobs, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllJobs not implemented")
 }
-func (UnimplementedMerlinServer) GetAllActiveJobs(context.Context, *emptypb.Empty) (*Jobs, error) {
+func (UnimplementedFox3Server) GetAllActiveJobs(context.Context, *emptypb.Empty) (*Jobs, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllActiveJobs not implemented")
 }
-func (UnimplementedMerlinServer) GetAgentJobs(context.Context, *ID) (*Jobs, error) {
+func (UnimplementedFox3Server) GetAgentJobs(context.Context, *ID) (*Jobs, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAgentJobs not implemented")
 }
-func (UnimplementedMerlinServer) GetAgentActiveJobs(context.Context, *ID) (*Jobs, error) {
+func (UnimplementedFox3Server) GetAgentActiveJobs(context.Context, *ID) (*Jobs, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAgentActiveJobs not implemented")
 }
-func (UnimplementedMerlinServer) CreateListener(context.Context, *Options) (*Message, error) {
+func (UnimplementedFox3Server) CreateListener(context.Context, *Options) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateListener not implemented")
 }
-func (UnimplementedMerlinServer) GetListenerIDs(context.Context, *emptypb.Empty) (*Slice, error) {
+func (UnimplementedFox3Server) GetListenerIDs(context.Context, *emptypb.Empty) (*Slice, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetListenerIDs not implemented")
 }
-func (UnimplementedMerlinServer) GetListeners(context.Context, *emptypb.Empty) (*TableData, error) {
+func (UnimplementedFox3Server) GetListeners(context.Context, *emptypb.Empty) (*TableData, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetListeners not implemented")
 }
-func (UnimplementedMerlinServer) GetListenerOptions(context.Context, *ID) (*Options, error) {
+func (UnimplementedFox3Server) GetListenerOptions(context.Context, *ID) (*Options, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetListenerOptions not implemented")
 }
-func (UnimplementedMerlinServer) GetListenerDefaultOptions(context.Context, *String) (*Options, error) {
+func (UnimplementedFox3Server) GetListenerDefaultOptions(context.Context, *String) (*Options, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetListenerDefaultOptions not implemented")
 }
-func (UnimplementedMerlinServer) GetListenerTypes(context.Context, *emptypb.Empty) (*Slice, error) {
+func (UnimplementedFox3Server) GetListenerTypes(context.Context, *emptypb.Empty) (*Slice, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetListenerTypes not implemented")
 }
-func (UnimplementedMerlinServer) GetListenerStatus(context.Context, *ID) (*Message, error) {
+func (UnimplementedFox3Server) GetListenerStatus(context.Context, *ID) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetListenerStatus not implemented")
 }
-func (UnimplementedMerlinServer) RemoveListener(context.Context, *ID) (*Message, error) {
+func (UnimplementedFox3Server) RemoveListener(context.Context, *ID) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveListener not implemented")
 }
-func (UnimplementedMerlinServer) RestartListener(context.Context, *ID) (*Message, error) {
+func (UnimplementedFox3Server) RestartListener(context.Context, *ID) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RestartListener not implemented")
 }
-func (UnimplementedMerlinServer) SetListenerOption(context.Context, *AgentCMD) (*Message, error) {
+func (UnimplementedFox3Server) SetListenerOption(context.Context, *AgentCMD) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetListenerOption not implemented")
 }
-func (UnimplementedMerlinServer) StartListener(context.Context, *ID) (*Message, error) {
+func (UnimplementedFox3Server) StartListener(context.Context, *ID) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method StartListener not implemented")
 }
-func (UnimplementedMerlinServer) StopListener(context.Context, *ID) (*Message, error) {
+func (UnimplementedFox3Server) StopListener(context.Context, *ID) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method StopListener not implemented")
 }
-func (UnimplementedMerlinServer) Servers(context.Context, *emptypb.Empty) (*Slice, error) {
+func (UnimplementedFox3Server) Servers(context.Context, *emptypb.Empty) (*Slice, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Servers not implemented")
 }
-func (UnimplementedMerlinServer) GetModule(context.Context, *String) (*Module, error) {
+func (UnimplementedFox3Server) GetModule(context.Context, *String) (*Module, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetModule not implemented")
 }
-func (UnimplementedMerlinServer) GetModuleList(context.Context, *emptypb.Empty) (*Slice, error) {
+func (UnimplementedFox3Server) GetModuleList(context.Context, *emptypb.Empty) (*Slice, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetModuleList not implemented")
 }
-func (UnimplementedMerlinServer) RunModule(context.Context, *ModuleRun) (*Messages, error) {
+func (UnimplementedFox3Server) RunModule(context.Context, *ModuleRun) (*Messages, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RunModule not implemented")
 }
-func (UnimplementedMerlinServer) mustEmbedUnimplementedMerlinServer() {}
+func (UnimplementedFox3Server) mustEmbedUnimplementedFox3Server() {}
 
-// UnsafeMerlinServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to MerlinServer will
+// UnsafeFox3Server may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to Fox3Server will
 // result in compilation errors.
-type UnsafeMerlinServer interface {
-	mustEmbedUnimplementedMerlinServer()
+type UnsafeFox3Server interface {
+	mustEmbedUnimplementedFox3Server()
 }
 
-func RegisterMerlinServer(s grpc.ServiceRegistrar, srv MerlinServer) {
+func RegisterFox3Server(s grpc.ServiceRegistrar, srv Fox3Server) {
 	s.RegisterService(&Fox3_ServiceDesc, srv)
 }
 
@@ -1238,14 +1238,14 @@ func _Fox3_Reconnect_Handler(srv interface{}, ctx context.Context, dec func(inte
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).Reconnect(ctx, in)
+		return srv.(Fox3Server).Reconnect(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/Reconnect",
+		FullMethod: "/rpc.Fox3/Reconnect",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).Reconnect(ctx, req.(*ID))
+		return srv.(Fox3Server).Reconnect(ctx, req.(*ID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1256,14 +1256,14 @@ func _Fox3_Register_Handler(srv interface{}, ctx context.Context, dec func(inter
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).Register(ctx, in)
+		return srv.(Fox3Server).Register(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/Register",
+		FullMethod: "/rpc.Fox3/Register",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).Register(ctx, req.(*emptypb.Empty))
+		return srv.(Fox3Server).Register(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1273,7 +1273,7 @@ func _Fox3_Listen_Handler(srv interface{}, stream grpc.ServerStream) error {
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(MerlinServer).Listen(m, &fox3ListenServer{stream})
+	return srv.(Fox3Server).Listen(m, &fox3ListenServer{stream})
 }
 
 type Fox3_ListenServer interface {
@@ -1295,14 +1295,14 @@ func _Fox3_Any_Handler(srv interface{}, ctx context.Context, dec func(interface{
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).Any(ctx, in)
+		return srv.(Fox3Server).Any(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/Any",
+		FullMethod: "/rpc.Fox3/Any",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).Any(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).Any(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1313,14 +1313,14 @@ func _Fox3_CD_Handler(srv interface{}, ctx context.Context, dec func(interface{}
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).CD(ctx, in)
+		return srv.(Fox3Server).CD(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/CD",
+		FullMethod: "/rpc.Fox3/CD",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).CD(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).CD(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1331,14 +1331,14 @@ func _Fox3_CheckIn_Handler(srv interface{}, ctx context.Context, dec func(interf
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).CheckIn(ctx, in)
+		return srv.(Fox3Server).CheckIn(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/CheckIn",
+		FullMethod: "/rpc.Fox3/CheckIn",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).CheckIn(ctx, req.(*ID))
+		return srv.(Fox3Server).CheckIn(ctx, req.(*ID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1349,14 +1349,14 @@ func _Fox3_ClearJobs_Handler(srv interface{}, ctx context.Context, dec func(inte
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).ClearJobs(ctx, in)
+		return srv.(Fox3Server).ClearJobs(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/ClearJobs",
+		FullMethod: "/rpc.Fox3/ClearJobs",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).ClearJobs(ctx, req.(*ID))
+		return srv.(Fox3Server).ClearJobs(ctx, req.(*ID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1367,14 +1367,14 @@ func _Fox3_ClearJobsCreated_Handler(srv interface{}, ctx context.Context, dec fu
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).ClearJobsCreated(ctx, in)
+		return srv.(Fox3Server).ClearJobsCreated(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/ClearJobsCreated",
+		FullMethod: "/rpc.Fox3/ClearJobsCreated",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).ClearJobsCreated(ctx, req.(*emptypb.Empty))
+		return srv.(Fox3Server).ClearJobsCreated(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1385,14 +1385,14 @@ func _Fox3_CMD_Handler(srv interface{}, ctx context.Context, dec func(interface{
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).CMD(ctx, in)
+		return srv.(Fox3Server).CMD(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/CMD",
+		FullMethod: "/rpc.Fox3/CMD",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).CMD(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).CMD(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1403,14 +1403,14 @@ func _Fox3_Connect_Handler(srv interface{}, ctx context.Context, dec func(interf
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).Connect(ctx, in)
+		return srv.(Fox3Server).Connect(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/Connect",
+		FullMethod: "/rpc.Fox3/Connect",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).Connect(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).Connect(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1421,14 +1421,14 @@ func _Fox3_Download_Handler(srv interface{}, ctx context.Context, dec func(inter
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).Download(ctx, in)
+		return srv.(Fox3Server).Download(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/Download",
+		FullMethod: "/rpc.Fox3/Download",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).Download(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).Download(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1439,14 +1439,14 @@ func _Fox3_ENV_Handler(srv interface{}, ctx context.Context, dec func(interface{
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).ENV(ctx, in)
+		return srv.(Fox3Server).ENV(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/ENV",
+		FullMethod: "/rpc.Fox3/ENV",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).ENV(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).ENV(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1457,14 +1457,14 @@ func _Fox3_ExecuteAssembly_Handler(srv interface{}, ctx context.Context, dec fun
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).ExecuteAssembly(ctx, in)
+		return srv.(Fox3Server).ExecuteAssembly(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/ExecuteAssembly",
+		FullMethod: "/rpc.Fox3/ExecuteAssembly",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).ExecuteAssembly(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).ExecuteAssembly(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1475,14 +1475,14 @@ func _Fox3_ExecutePE_Handler(srv interface{}, ctx context.Context, dec func(inte
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).ExecutePE(ctx, in)
+		return srv.(Fox3Server).ExecutePE(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/ExecutePE",
+		FullMethod: "/rpc.Fox3/ExecutePE",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).ExecutePE(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).ExecutePE(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1493,14 +1493,14 @@ func _Fox3_ExecuteShellcode_Handler(srv interface{}, ctx context.Context, dec fu
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).ExecuteShellcode(ctx, in)
+		return srv.(Fox3Server).ExecuteShellcode(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/ExecuteShellcode",
+		FullMethod: "/rpc.Fox3/ExecuteShellcode",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).ExecuteShellcode(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).ExecuteShellcode(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1511,14 +1511,14 @@ func _Fox3_Exit_Handler(srv interface{}, ctx context.Context, dec func(interface
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).Exit(ctx, in)
+		return srv.(Fox3Server).Exit(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/Exit",
+		FullMethod: "/rpc.Fox3/Exit",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).Exit(ctx, req.(*ID))
+		return srv.(Fox3Server).Exit(ctx, req.(*ID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1529,14 +1529,14 @@ func _Fox3_IFConfig_Handler(srv interface{}, ctx context.Context, dec func(inter
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).IFConfig(ctx, in)
+		return srv.(Fox3Server).IFConfig(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/IFConfig",
+		FullMethod: "/rpc.Fox3/IFConfig",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).IFConfig(ctx, req.(*ID))
+		return srv.(Fox3Server).IFConfig(ctx, req.(*ID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1547,14 +1547,14 @@ func _Fox3_InvokeAssembly_Handler(srv interface{}, ctx context.Context, dec func
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).InvokeAssembly(ctx, in)
+		return srv.(Fox3Server).InvokeAssembly(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/InvokeAssembly",
+		FullMethod: "/rpc.Fox3/InvokeAssembly",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).InvokeAssembly(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).InvokeAssembly(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1565,14 +1565,14 @@ func _Fox3_JA3_Handler(srv interface{}, ctx context.Context, dec func(interface{
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).JA3(ctx, in)
+		return srv.(Fox3Server).JA3(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/JA3",
+		FullMethod: "/rpc.Fox3/JA3",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).JA3(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).JA3(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1583,14 +1583,14 @@ func _Fox3_KillDate_Handler(srv interface{}, ctx context.Context, dec func(inter
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).KillDate(ctx, in)
+		return srv.(Fox3Server).KillDate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/KillDate",
+		FullMethod: "/rpc.Fox3/KillDate",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).KillDate(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).KillDate(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1601,14 +1601,14 @@ func _Fox3_KillProcess_Handler(srv interface{}, ctx context.Context, dec func(in
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).KillProcess(ctx, in)
+		return srv.(Fox3Server).KillProcess(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/KillProcess",
+		FullMethod: "/rpc.Fox3/KillProcess",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).KillProcess(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).KillProcess(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1619,14 +1619,14 @@ func _Fox3_LinkAgent_Handler(srv interface{}, ctx context.Context, dec func(inte
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).LinkAgent(ctx, in)
+		return srv.(Fox3Server).LinkAgent(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/LinkAgent",
+		FullMethod: "/rpc.Fox3/LinkAgent",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).LinkAgent(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).LinkAgent(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1637,14 +1637,14 @@ func _Fox3_ListAssemblies_Handler(srv interface{}, ctx context.Context, dec func
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).ListAssemblies(ctx, in)
+		return srv.(Fox3Server).ListAssemblies(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/ListAssemblies",
+		FullMethod: "/rpc.Fox3/ListAssemblies",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).ListAssemblies(ctx, req.(*ID))
+		return srv.(Fox3Server).ListAssemblies(ctx, req.(*ID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1655,14 +1655,14 @@ func _Fox3_Listener_Handler(srv interface{}, ctx context.Context, dec func(inter
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).Listener(ctx, in)
+		return srv.(Fox3Server).Listener(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/Listener",
+		FullMethod: "/rpc.Fox3/Listener",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).Listener(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).Listener(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1673,14 +1673,14 @@ func _Fox3_LoadAssembly_Handler(srv interface{}, ctx context.Context, dec func(i
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).LoadAssembly(ctx, in)
+		return srv.(Fox3Server).LoadAssembly(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/LoadAssembly",
+		FullMethod: "/rpc.Fox3/LoadAssembly",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).LoadAssembly(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).LoadAssembly(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1691,14 +1691,14 @@ func _Fox3_LoadCLR_Handler(srv interface{}, ctx context.Context, dec func(interf
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).LoadCLR(ctx, in)
+		return srv.(Fox3Server).LoadCLR(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/LoadCLR",
+		FullMethod: "/rpc.Fox3/LoadCLR",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).LoadCLR(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).LoadCLR(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1709,14 +1709,14 @@ func _Fox3_LS_Handler(srv interface{}, ctx context.Context, dec func(interface{}
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).LS(ctx, in)
+		return srv.(Fox3Server).LS(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/LS",
+		FullMethod: "/rpc.Fox3/LS",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).LS(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).LS(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1727,14 +1727,14 @@ func _Fox3_MaxRetry_Handler(srv interface{}, ctx context.Context, dec func(inter
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).MaxRetry(ctx, in)
+		return srv.(Fox3Server).MaxRetry(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/MaxRetry",
+		FullMethod: "/rpc.Fox3/MaxRetry",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).MaxRetry(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).MaxRetry(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1745,14 +1745,14 @@ func _Fox3_Memory_Handler(srv interface{}, ctx context.Context, dec func(interfa
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).Memory(ctx, in)
+		return srv.(Fox3Server).Memory(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/Memory",
+		FullMethod: "/rpc.Fox3/Memory",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).Memory(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).Memory(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1763,14 +1763,14 @@ func _Fox3_MEMFD_Handler(srv interface{}, ctx context.Context, dec func(interfac
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).MEMFD(ctx, in)
+		return srv.(Fox3Server).MEMFD(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/MEMFD",
+		FullMethod: "/rpc.Fox3/MEMFD",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).MEMFD(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).MEMFD(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1781,14 +1781,14 @@ func _Fox3_Netstat_Handler(srv interface{}, ctx context.Context, dec func(interf
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).Netstat(ctx, in)
+		return srv.(Fox3Server).Netstat(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/Netstat",
+		FullMethod: "/rpc.Fox3/Netstat",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).Netstat(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).Netstat(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1799,14 +1799,14 @@ func _Fox3_Note_Handler(srv interface{}, ctx context.Context, dec func(interface
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).Note(ctx, in)
+		return srv.(Fox3Server).Note(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/Note",
+		FullMethod: "/rpc.Fox3/Note",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).Note(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).Note(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1817,14 +1817,14 @@ func _Fox3_Nslookup_Handler(srv interface{}, ctx context.Context, dec func(inter
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).Nslookup(ctx, in)
+		return srv.(Fox3Server).Nslookup(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/Nslookup",
+		FullMethod: "/rpc.Fox3/Nslookup",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).Nslookup(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).Nslookup(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1835,14 +1835,14 @@ func _Fox3_Padding_Handler(srv interface{}, ctx context.Context, dec func(interf
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).Padding(ctx, in)
+		return srv.(Fox3Server).Padding(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/Padding",
+		FullMethod: "/rpc.Fox3/Padding",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).Padding(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).Padding(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1853,14 +1853,14 @@ func _Fox3_Parrot_Handler(srv interface{}, ctx context.Context, dec func(interfa
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).Parrot(ctx, in)
+		return srv.(Fox3Server).Parrot(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/Parrot",
+		FullMethod: "/rpc.Fox3/Parrot",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).Parrot(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).Parrot(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1871,14 +1871,14 @@ func _Fox3_Pipes_Handler(srv interface{}, ctx context.Context, dec func(interfac
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).Pipes(ctx, in)
+		return srv.(Fox3Server).Pipes(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/Pipes",
+		FullMethod: "/rpc.Fox3/Pipes",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).Pipes(ctx, req.(*ID))
+		return srv.(Fox3Server).Pipes(ctx, req.(*ID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1889,14 +1889,14 @@ func _Fox3_PS_Handler(srv interface{}, ctx context.Context, dec func(interface{}
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).PS(ctx, in)
+		return srv.(Fox3Server).PS(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/PS",
+		FullMethod: "/rpc.Fox3/PS",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).PS(ctx, req.(*ID))
+		return srv.(Fox3Server).PS(ctx, req.(*ID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1907,14 +1907,14 @@ func _Fox3_PWD_Handler(srv interface{}, ctx context.Context, dec func(interface{
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).PWD(ctx, in)
+		return srv.(Fox3Server).PWD(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/PWD",
+		FullMethod: "/rpc.Fox3/PWD",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).PWD(ctx, req.(*ID))
+		return srv.(Fox3Server).PWD(ctx, req.(*ID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1925,14 +1925,14 @@ func _Fox3_RM_Handler(srv interface{}, ctx context.Context, dec func(interface{}
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).RM(ctx, in)
+		return srv.(Fox3Server).RM(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/RM",
+		FullMethod: "/rpc.Fox3/RM",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).RM(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).RM(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1943,14 +1943,14 @@ func _Fox3_RunAs_Handler(srv interface{}, ctx context.Context, dec func(interfac
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).RunAs(ctx, in)
+		return srv.(Fox3Server).RunAs(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/RunAs",
+		FullMethod: "/rpc.Fox3/RunAs",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).RunAs(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).RunAs(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1961,14 +1961,14 @@ func _Fox3_SecureDelete_Handler(srv interface{}, ctx context.Context, dec func(i
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).SecureDelete(ctx, in)
+		return srv.(Fox3Server).SecureDelete(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/SecureDelete",
+		FullMethod: "/rpc.Fox3/SecureDelete",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).SecureDelete(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).SecureDelete(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1979,14 +1979,14 @@ func _Fox3_SharpGen_Handler(srv interface{}, ctx context.Context, dec func(inter
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).SharpGen(ctx, in)
+		return srv.(Fox3Server).SharpGen(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/SharpGen",
+		FullMethod: "/rpc.Fox3/SharpGen",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).SharpGen(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).SharpGen(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1997,14 +1997,14 @@ func _Fox3_Skew_Handler(srv interface{}, ctx context.Context, dec func(interface
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).Skew(ctx, in)
+		return srv.(Fox3Server).Skew(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/Skew",
+		FullMethod: "/rpc.Fox3/Skew",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).Skew(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).Skew(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2015,14 +2015,14 @@ func _Fox3_Sleep_Handler(srv interface{}, ctx context.Context, dec func(interfac
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).Sleep(ctx, in)
+		return srv.(Fox3Server).Sleep(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/Sleep",
+		FullMethod: "/rpc.Fox3/Sleep",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).Sleep(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).Sleep(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2033,14 +2033,14 @@ func _Fox3_Socks_Handler(srv interface{}, ctx context.Context, dec func(interfac
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).Socks(ctx, in)
+		return srv.(Fox3Server).Socks(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/Socks",
+		FullMethod: "/rpc.Fox3/Socks",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).Socks(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).Socks(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2051,14 +2051,14 @@ func _Fox3_SSH_Handler(srv interface{}, ctx context.Context, dec func(interface{
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).SSH(ctx, in)
+		return srv.(Fox3Server).SSH(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/SSH",
+		FullMethod: "/rpc.Fox3/SSH",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).SSH(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).SSH(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2069,14 +2069,14 @@ func _Fox3_Token_Handler(srv interface{}, ctx context.Context, dec func(interfac
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).Token(ctx, in)
+		return srv.(Fox3Server).Token(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/Token",
+		FullMethod: "/rpc.Fox3/Token",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).Token(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).Token(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2087,14 +2087,14 @@ func _Fox3_Touch_Handler(srv interface{}, ctx context.Context, dec func(interfac
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).Touch(ctx, in)
+		return srv.(Fox3Server).Touch(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/Touch",
+		FullMethod: "/rpc.Fox3/Touch",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).Touch(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).Touch(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2105,14 +2105,14 @@ func _Fox3_UnlinkAgent_Handler(srv interface{}, ctx context.Context, dec func(in
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).UnlinkAgent(ctx, in)
+		return srv.(Fox3Server).UnlinkAgent(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/UnlinkAgent",
+		FullMethod: "/rpc.Fox3/UnlinkAgent",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).UnlinkAgent(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).UnlinkAgent(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2123,14 +2123,14 @@ func _Fox3_Upload_Handler(srv interface{}, ctx context.Context, dec func(interfa
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).Upload(ctx, in)
+		return srv.(Fox3Server).Upload(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/Upload",
+		FullMethod: "/rpc.Fox3/Upload",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).Upload(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).Upload(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2141,14 +2141,14 @@ func _Fox3_Uptime_Handler(srv interface{}, ctx context.Context, dec func(interfa
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).Uptime(ctx, in)
+		return srv.(Fox3Server).Uptime(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/Uptime",
+		FullMethod: "/rpc.Fox3/Uptime",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).Uptime(ctx, req.(*ID))
+		return srv.(Fox3Server).Uptime(ctx, req.(*ID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2159,14 +2159,14 @@ func _Fox3_Groups_Handler(srv interface{}, ctx context.Context, dec func(interfa
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).Groups(ctx, in)
+		return srv.(Fox3Server).Groups(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/Groups",
+		FullMethod: "/rpc.Fox3/Groups",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).Groups(ctx, req.(*emptypb.Empty))
+		return srv.(Fox3Server).Groups(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2177,14 +2177,14 @@ func _Fox3_GroupAdd_Handler(srv interface{}, ctx context.Context, dec func(inter
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).GroupAdd(ctx, in)
+		return srv.(Fox3Server).GroupAdd(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/GroupAdd",
+		FullMethod: "/rpc.Fox3/GroupAdd",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).GroupAdd(ctx, req.(*Group))
+		return srv.(Fox3Server).GroupAdd(ctx, req.(*Group))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2195,14 +2195,14 @@ func _Fox3_GroupList_Handler(srv interface{}, ctx context.Context, dec func(inte
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).GroupList(ctx, in)
+		return srv.(Fox3Server).GroupList(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/GroupList",
+		FullMethod: "/rpc.Fox3/GroupList",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).GroupList(ctx, req.(*ID))
+		return srv.(Fox3Server).GroupList(ctx, req.(*ID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2213,14 +2213,14 @@ func _Fox3_GroupListAll_Handler(srv interface{}, ctx context.Context, dec func(i
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).GroupListAll(ctx, in)
+		return srv.(Fox3Server).GroupListAll(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/GroupListAll",
+		FullMethod: "/rpc.Fox3/GroupListAll",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).GroupListAll(ctx, req.(*emptypb.Empty))
+		return srv.(Fox3Server).GroupListAll(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2231,14 +2231,14 @@ func _Fox3_GroupRemove_Handler(srv interface{}, ctx context.Context, dec func(in
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).GroupRemove(ctx, in)
+		return srv.(Fox3Server).GroupRemove(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/GroupRemove",
+		FullMethod: "/rpc.Fox3/GroupRemove",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).GroupRemove(ctx, req.(*Group))
+		return srv.(Fox3Server).GroupRemove(ctx, req.(*Group))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2249,14 +2249,14 @@ func _Fox3_GetAgent_Handler(srv interface{}, ctx context.Context, dec func(inter
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).GetAgent(ctx, in)
+		return srv.(Fox3Server).GetAgent(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/GetAgent",
+		FullMethod: "/rpc.Fox3/GetAgent",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).GetAgent(ctx, req.(*ID))
+		return srv.(Fox3Server).GetAgent(ctx, req.(*ID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2267,14 +2267,14 @@ func _Fox3_GetAgents_Handler(srv interface{}, ctx context.Context, dec func(inte
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).GetAgents(ctx, in)
+		return srv.(Fox3Server).GetAgents(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/GetAgents",
+		FullMethod: "/rpc.Fox3/GetAgents",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).GetAgents(ctx, req.(*emptypb.Empty))
+		return srv.(Fox3Server).GetAgents(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2285,14 +2285,14 @@ func _Fox3_GetAgentLinks_Handler(srv interface{}, ctx context.Context, dec func(
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).GetAgentLinks(ctx, in)
+		return srv.(Fox3Server).GetAgentLinks(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/GetAgentLinks",
+		FullMethod: "/rpc.Fox3/GetAgentLinks",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).GetAgentLinks(ctx, req.(*ID))
+		return srv.(Fox3Server).GetAgentLinks(ctx, req.(*ID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2303,14 +2303,14 @@ func _Fox3_GetAgentStatus_Handler(srv interface{}, ctx context.Context, dec func
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).GetAgentStatus(ctx, in)
+		return srv.(Fox3Server).GetAgentStatus(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/GetAgentStatus",
+		FullMethod: "/rpc.Fox3/GetAgentStatus",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).GetAgentStatus(ctx, req.(*ID))
+		return srv.(Fox3Server).GetAgentStatus(ctx, req.(*ID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2321,14 +2321,14 @@ func _Fox3_GetAgentRows_Handler(srv interface{}, ctx context.Context, dec func(i
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).GetAgentRows(ctx, in)
+		return srv.(Fox3Server).GetAgentRows(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/GetAgentRows",
+		FullMethod: "/rpc.Fox3/GetAgentRows",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).GetAgentRows(ctx, req.(*emptypb.Empty))
+		return srv.(Fox3Server).GetAgentRows(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2339,14 +2339,14 @@ func _Fox3_Remove_Handler(srv interface{}, ctx context.Context, dec func(interfa
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).Remove(ctx, in)
+		return srv.(Fox3Server).Remove(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/Remove",
+		FullMethod: "/rpc.Fox3/Remove",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).Remove(ctx, req.(*ID))
+		return srv.(Fox3Server).Remove(ctx, req.(*ID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2357,14 +2357,14 @@ func _Fox3_GetAllJobs_Handler(srv interface{}, ctx context.Context, dec func(int
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).GetAllJobs(ctx, in)
+		return srv.(Fox3Server).GetAllJobs(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/GetAllJobs",
+		FullMethod: "/rpc.Fox3/GetAllJobs",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).GetAllJobs(ctx, req.(*emptypb.Empty))
+		return srv.(Fox3Server).GetAllJobs(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2375,14 +2375,14 @@ func _Fox3_GetAllActiveJobs_Handler(srv interface{}, ctx context.Context, dec fu
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).GetAllActiveJobs(ctx, in)
+		return srv.(Fox3Server).GetAllActiveJobs(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/GetAllActiveJobs",
+		FullMethod: "/rpc.Fox3/GetAllActiveJobs",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).GetAllActiveJobs(ctx, req.(*emptypb.Empty))
+		return srv.(Fox3Server).GetAllActiveJobs(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2393,14 +2393,14 @@ func _Fox3_GetAgentJobs_Handler(srv interface{}, ctx context.Context, dec func(i
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).GetAgentJobs(ctx, in)
+		return srv.(Fox3Server).GetAgentJobs(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/GetAgentJobs",
+		FullMethod: "/rpc.Fox3/GetAgentJobs",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).GetAgentJobs(ctx, req.(*ID))
+		return srv.(Fox3Server).GetAgentJobs(ctx, req.(*ID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2411,14 +2411,14 @@ func _Fox3_GetAgentActiveJobs_Handler(srv interface{}, ctx context.Context, dec 
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).GetAgentActiveJobs(ctx, in)
+		return srv.(Fox3Server).GetAgentActiveJobs(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/GetAgentActiveJobs",
+		FullMethod: "/rpc.Fox3/GetAgentActiveJobs",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).GetAgentActiveJobs(ctx, req.(*ID))
+		return srv.(Fox3Server).GetAgentActiveJobs(ctx, req.(*ID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2429,14 +2429,14 @@ func _Fox3_CreateListener_Handler(srv interface{}, ctx context.Context, dec func
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).CreateListener(ctx, in)
+		return srv.(Fox3Server).CreateListener(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/CreateListener",
+		FullMethod: "/rpc.Fox3/CreateListener",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).CreateListener(ctx, req.(*Options))
+		return srv.(Fox3Server).CreateListener(ctx, req.(*Options))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2447,14 +2447,14 @@ func _Fox3_GetListenerIDs_Handler(srv interface{}, ctx context.Context, dec func
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).GetListenerIDs(ctx, in)
+		return srv.(Fox3Server).GetListenerIDs(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/GetListenerIDs",
+		FullMethod: "/rpc.Fox3/GetListenerIDs",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).GetListenerIDs(ctx, req.(*emptypb.Empty))
+		return srv.(Fox3Server).GetListenerIDs(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2465,14 +2465,14 @@ func _Fox3_GetListeners_Handler(srv interface{}, ctx context.Context, dec func(i
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).GetListeners(ctx, in)
+		return srv.(Fox3Server).GetListeners(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/GetListeners",
+		FullMethod: "/rpc.Fox3/GetListeners",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).GetListeners(ctx, req.(*emptypb.Empty))
+		return srv.(Fox3Server).GetListeners(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2483,14 +2483,14 @@ func _Fox3_GetListenerOptions_Handler(srv interface{}, ctx context.Context, dec 
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).GetListenerOptions(ctx, in)
+		return srv.(Fox3Server).GetListenerOptions(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/GetListenerOptions",
+		FullMethod: "/rpc.Fox3/GetListenerOptions",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).GetListenerOptions(ctx, req.(*ID))
+		return srv.(Fox3Server).GetListenerOptions(ctx, req.(*ID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2501,14 +2501,14 @@ func _Fox3_GetListenerDefaultOptions_Handler(srv interface{}, ctx context.Contex
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).GetListenerDefaultOptions(ctx, in)
+		return srv.(Fox3Server).GetListenerDefaultOptions(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/GetListenerDefaultOptions",
+		FullMethod: "/rpc.Fox3/GetListenerDefaultOptions",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).GetListenerDefaultOptions(ctx, req.(*String))
+		return srv.(Fox3Server).GetListenerDefaultOptions(ctx, req.(*String))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2519,14 +2519,14 @@ func _Fox3_GetListenerTypes_Handler(srv interface{}, ctx context.Context, dec fu
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).GetListenerTypes(ctx, in)
+		return srv.(Fox3Server).GetListenerTypes(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/GetListenerTypes",
+		FullMethod: "/rpc.Fox3/GetListenerTypes",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).GetListenerTypes(ctx, req.(*emptypb.Empty))
+		return srv.(Fox3Server).GetListenerTypes(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2537,14 +2537,14 @@ func _Fox3_GetListenerStatus_Handler(srv interface{}, ctx context.Context, dec f
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).GetListenerStatus(ctx, in)
+		return srv.(Fox3Server).GetListenerStatus(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/GetListenerStatus",
+		FullMethod: "/rpc.Fox3/GetListenerStatus",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).GetListenerStatus(ctx, req.(*ID))
+		return srv.(Fox3Server).GetListenerStatus(ctx, req.(*ID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2555,14 +2555,14 @@ func _Fox3_RemoveListener_Handler(srv interface{}, ctx context.Context, dec func
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).RemoveListener(ctx, in)
+		return srv.(Fox3Server).RemoveListener(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/RemoveListener",
+		FullMethod: "/rpc.Fox3/RemoveListener",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).RemoveListener(ctx, req.(*ID))
+		return srv.(Fox3Server).RemoveListener(ctx, req.(*ID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2573,14 +2573,14 @@ func _Fox3_RestartListener_Handler(srv interface{}, ctx context.Context, dec fun
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).RestartListener(ctx, in)
+		return srv.(Fox3Server).RestartListener(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/RestartListener",
+		FullMethod: "/rpc.Fox3/RestartListener",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).RestartListener(ctx, req.(*ID))
+		return srv.(Fox3Server).RestartListener(ctx, req.(*ID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2591,14 +2591,14 @@ func _Fox3_SetListenerOption_Handler(srv interface{}, ctx context.Context, dec f
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).SetListenerOption(ctx, in)
+		return srv.(Fox3Server).SetListenerOption(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/SetListenerOption",
+		FullMethod: "/rpc.Fox3/SetListenerOption",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).SetListenerOption(ctx, req.(*AgentCMD))
+		return srv.(Fox3Server).SetListenerOption(ctx, req.(*AgentCMD))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2609,14 +2609,14 @@ func _Fox3_StartListener_Handler(srv interface{}, ctx context.Context, dec func(
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).StartListener(ctx, in)
+		return srv.(Fox3Server).StartListener(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/StartListener",
+		FullMethod: "/rpc.Fox3/StartListener",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).StartListener(ctx, req.(*ID))
+		return srv.(Fox3Server).StartListener(ctx, req.(*ID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2627,14 +2627,14 @@ func _Fox3_StopListener_Handler(srv interface{}, ctx context.Context, dec func(i
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).StopListener(ctx, in)
+		return srv.(Fox3Server).StopListener(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/StopListener",
+		FullMethod: "/rpc.Fox3/StopListener",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).StopListener(ctx, req.(*ID))
+		return srv.(Fox3Server).StopListener(ctx, req.(*ID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2645,14 +2645,14 @@ func _Fox3_Servers_Handler(srv interface{}, ctx context.Context, dec func(interf
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).Servers(ctx, in)
+		return srv.(Fox3Server).Servers(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/Servers",
+		FullMethod: "/rpc.Fox3/Servers",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).Servers(ctx, req.(*emptypb.Empty))
+		return srv.(Fox3Server).Servers(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2663,14 +2663,14 @@ func _Fox3_GetModule_Handler(srv interface{}, ctx context.Context, dec func(inte
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).GetModule(ctx, in)
+		return srv.(Fox3Server).GetModule(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/GetModule",
+		FullMethod: "/rpc.Fox3/GetModule",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).GetModule(ctx, req.(*String))
+		return srv.(Fox3Server).GetModule(ctx, req.(*String))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2681,14 +2681,14 @@ func _Fox3_GetModuleList_Handler(srv interface{}, ctx context.Context, dec func(
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).GetModuleList(ctx, in)
+		return srv.(Fox3Server).GetModuleList(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/GetModuleList",
+		FullMethod: "/rpc.Fox3/GetModuleList",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).GetModuleList(ctx, req.(*emptypb.Empty))
+		return srv.(Fox3Server).GetModuleList(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2699,24 +2699,24 @@ func _Fox3_RunModule_Handler(srv interface{}, ctx context.Context, dec func(inte
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MerlinServer).RunModule(ctx, in)
+		return srv.(Fox3Server).RunModule(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rpc.Merlin/RunModule",
+		FullMethod: "/rpc.Fox3/RunModule",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerlinServer).RunModule(ctx, req.(*ModuleRun))
+		return srv.(Fox3Server).RunModule(ctx, req.(*ModuleRun))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// Fox3_ServiceDesc is the grpc.ServiceDesc for Merlin service.
+// Fox3_ServiceDesc is the grpc.ServiceDesc for Fox3 service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Fox3_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "rpc.Merlin",
-	HandlerType: (*MerlinServer)(nil),
+	ServiceName: "rpc.Fox3",
+	HandlerType: (*Fox3Server)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "Reconnect",

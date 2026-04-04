@@ -555,8 +555,8 @@ func (s *Server) generateServer() error {
 		}
 
 		if insecure {
-			m := fmt.Sprintf("Insecure publicly distributed Merlin x.509 testing certificate in use for %s server on %s:%d\n", s.ProtocolString(), s.iface, s.port)
-			m += "Additional details: https://merlin-c2.readthedocs.io/en/latest/server/x509.html"
+			m := fmt.Sprintf("Insecure publicly distributed x.509 testing certificate in use for %s server on %s:%d\n", s.ProtocolString(), s.iface, s.port)
+			m += "Replace with a proper TLS certificate for production use"
 			slog.Info(m)
 			memory.NewRepository().Add(message.NewMessage(message.Note, m))
 		}

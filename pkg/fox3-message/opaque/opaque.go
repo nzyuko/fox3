@@ -49,7 +49,7 @@ const (
 	ReAuthenticate
 )
 
-// Opaque is a structure embedded into Merlin Base messages as a payload used to complete OPAQUE registration and authentication
+// Opaque is a structure embedded into Fox3 Base messages as a payload used to complete OPAQUE registration and authentication
 type Opaque struct {
 	Type    Type   // The type of OPAQUE message from the constants
 	Payload []byte // OPAQUE payload data

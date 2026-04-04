@@ -79,13 +79,13 @@ func (h *Handler) agentHandler(w http.ResponseWriter, r *http.Request) {
 		)
 	}
 
-	// Merlin only accepts/handles HTTP POST messages
+	// Fox3 only accepts/handles HTTP POST messages
 	if r.Method != http.MethodPost {
 		w.WriteHeader(404)
 		return
 	}
 
-	// Check for Merlin PRISM activity
+	// Check for PRISM fingerprinting activity
 	if r.UserAgent() == "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.85 Safari/537.36 " {
 		msg := fmt.Sprintf("Someone from %s is attempting to fingerprint this Fox3 server", r.RemoteAddr)
 		slog.Warn(msg)

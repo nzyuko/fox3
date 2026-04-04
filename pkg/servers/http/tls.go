@@ -154,11 +154,11 @@ func CheckInsecureFingerprint(certificate tls.Certificate) (bool, error) {
 	S256 := sha256.Sum256(x509Certificate.Raw)
 	sha256Fingerprint := hex.EncodeToString(S256[:])
 
-	// merlinCRT is the string representation of the SHA1 fingerprint for the public x.509 certificate distributed with Merlin
-	merlinCRT := "4af9224c77821bc8a46503cfc2764b94b1fc8aa2521afc627e835f0b3c449f50"
+	// defaultCRT is the SHA256 fingerprint for the default x.509 testing certificate
+	defaultCRT := "4af9224c77821bc8a46503cfc2764b94b1fc8aa2521afc627e835f0b3c449f50"
 
-	// Check to see if the Public Key SHA1 finger print matches the certificate distributed with Merlin for testing
-	if merlinCRT == sha256Fingerprint {
+	// Check to see if the Public Key SHA256 fingerprint matches the default testing certificate
+	if defaultCRT == sha256Fingerprint {
 		return true, nil
 	}
 	return false, nil

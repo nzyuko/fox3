@@ -73,7 +73,7 @@ func main() {
 	db.AutoMigrate()
 
 	// Warn about default password
-	if *password == "fox3" || *password == "fox3" {
+	if *password == "fox3" {
 		slog.Warn("Using default password — change with --password for production use")
 	}
 

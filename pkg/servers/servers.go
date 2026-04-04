@@ -41,12 +41,18 @@ const (
 	HTTP2 int = 4
 	// HTTP3 is HTTP/2.0 Secure over Quick UDP Internet Connection (QUIC)
 	HTTP3 int = 5
+	// TCP is a TCP bind/reverse server
+	TCP int = 6
+	// DNS is a DNS server for agent communication
+	DNS int = 7
+	// DOH is a DNS-over-HTTPS server
+	DOH int = 8
 )
 
 // RegisteredServers contains an array of registered server types
 var RegisteredServers = make(map[int]string)
 
-// ServerInterface is used to provide a standard set of methods a server module must support to work with Merlin
+// ServerInterface is used to provide a standard set of methods a server module must support to work with Fox3
 type ServerInterface interface {
 	Addr() string
 	ConfiguredOptions() map[string]string
@@ -75,6 +81,12 @@ func Protocol(protocol int) string {
 		return "HTTP2"
 	case HTTP3:
 		return "HTTP3"
+	case TCP:
+		return "TCP"
+	case DNS:
+		return "DNS"
+	case DOH:
+		return "DOH"
 	default:
 		return "invalid protocol"
 	}
@@ -93,6 +105,12 @@ func FromString(protocol string) int {
 		return HTTP2
 	case "http3":
 		return HTTP3
+	case "tcp":
+		return TCP
+	case "dns":
+		return DNS
+	case "doh":
+		return DOH
 	default:
 		return 0
 	}

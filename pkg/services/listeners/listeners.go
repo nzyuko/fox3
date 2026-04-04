@@ -167,7 +167,7 @@ func (ls *ListenerService) NewListener(options map[string]string) (listener list
 	}
 }
 
-// CLICompleter returns a list of Listener & Server types that Merlin supports for CLI tab completion
+// CLICompleter returns a list of Listener & Server types that Fox3 supports for CLI tab completion
 func (ls *ListenerService) CLICompleter() func(string) []string {
 	return func(line string) []string {
 		var s []string

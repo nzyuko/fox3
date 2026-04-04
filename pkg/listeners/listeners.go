@@ -44,6 +44,10 @@ const (
 	TCP     = 2 // TCP is a constant for TCP bind & reverse listeners
 	UDP     = 3 // UDP is a constant for UDP bind & reverse listeners
 	SMB     = 4 // SMB is a constant for SMB named pipe bind & reverse listeners
+	DNS     = 5 // DNS is a constant for DNS-based listeners
+	DOH     = 6 // DOH is a constant for DNS-over-HTTPS listeners
+	DOHDNS  = 7 // DOHDNS is a constant for combined DoH+DNS listeners
+	WSS     = 8 // WSS is a constant for WebSocket Secure listeners
 )
 
 // Listener is an interface that contains all the functions any Agent listener must implement
@@ -76,6 +80,14 @@ func FromString(kind string) int {
 		return TCP
 	case "udp":
 		return UDP
+	case "dns":
+		return DNS
+	case "doh":
+		return DOH
+	case "dohdns":
+		return DOHDNS
+	case "wss":
+		return WSS
 	default:
 		return UNKNOWN
 	}
@@ -91,11 +103,19 @@ func String(kind int) string {
 		return "TCP"
 	case UDP:
 		return "UDP"
+	case DNS:
+		return "DNS"
+	case DOH:
+		return "DOH"
+	case DOHDNS:
+		return "DOHDNS"
+	case WSS:
+		return "WSS"
 	default:
 		return fmt.Sprintf("Unknown Listener type: %d", kind)
 	}
 }
 
 func Listeners() []int {
-	return []int{HTTP, SMB, TCP, UDP}
+	return []int{HTTP, SMB, TCP, UDP, DNS, DOH, DOHDNS, WSS}
 }

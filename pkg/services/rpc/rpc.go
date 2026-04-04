@@ -62,7 +62,7 @@ import (
 
 // Server is the structure used with the RPC service
 type Server struct {
-	pb.UnimplementedMerlinServer
+	pb.UnimplementedFox3Server
 	messageChan  map[uuid.UUID]chan *pb.Message // messageChan is a channel of messages to send to the client
 	ls           listeners.ListenerService      // ls is the service used to interact with the Listeners service on the server
 	clientRepo   client.Repository              // clientRepo is the repository (data store) of CLI clients connected to the RPC server
@@ -126,7 +126,7 @@ func withMemoryClientMessageRepository() message.Repository {
 /* SERVER */
 
 // Listen provides a stream of messages for a CLI client
-func (s *Server) Listen(in *pb.ID, stream pb.Merlin_ListenServer) error {
+func (s *Server) Listen(in *pb.ID, stream pb.Fox3_ListenServer) error {
 	slog.Log(context.Background(), logging.LevelTrace, "entering into function", "in", in)
 	// Parse the UUID from the request
 	id, err := uuid.Parse(in.Id)
@@ -344,7 +344,7 @@ func (s *Service) Run(addr string) error {
 	grpcServer := grpc.NewServer(opts...)
 
 	// Register the server with the gRPC server
-	pb.RegisterMerlinServer(grpcServer, s.rpcServer)
+	pb.RegisterFox3Server(grpcServer, s.rpcServer)
 
 	go s.rpcServer.ListenForClientMessages()
 
@@ -596,7 +596,7 @@ func getTLSConfig(secure bool, tlsKey, tlsCert, tlsCA string) (*tls.Config, erro
 	template := &x509.Certificate{
 		SerialNumber: serial,
 		Subject: pkix.Name{
-			Organization: []string{"Merlin"},
+			Organization: []string{"Fox3"},
 		},
 		NotBefore:             time.Now(),
 		NotAfter:              time.Now().Add(time.Hour * 24 * 371),
