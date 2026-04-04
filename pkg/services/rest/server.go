@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
+	"os"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -102,6 +104,21 @@ func (s *Server) Run(addr string) error {
 	apiMux.HandleFunc("/api/ws", hub.ServeWS)
 
 	mux.Handle("/api/", AuthMiddleware(apiMux))
+
+	// Serve frontend static files
+	// Try relative path first, fall back to checking common locations
+	frontendDir := "frontend/dist"
+	if _, err := os.Stat(frontendDir); os.IsNotExist(err) {
+		// Try from executable directory
+		if exe, err := os.Executable(); err == nil {
+			candidate := filepath.Join(filepath.Dir(exe), "frontend", "dist")
+			if _, err := os.Stat(candidate); err == nil {
+				frontendDir = candidate
+			}
+		}
+	}
+	fs := http.FileServer(http.Dir(frontendDir))
+	mux.Handle("/", fs)
 
 	handler := corsMiddleware(mux)
 
