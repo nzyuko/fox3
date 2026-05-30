@@ -37,21 +37,15 @@ import (
 	"github.com/nzyuko/fox3/v2/pkg/db"
 	"github.com/nzyuko/fox3/v2/pkg/logging"
 	"github.com/nzyuko/fox3/v2/pkg/services/rest"
-	"github.com/nzyuko/fox3/v2/pkg/services/rpc"
 )
 
 func main() {
-	addr := flag.String("addr", "127.0.0.1:50051", "The address to listen on for gRPC client connections")
-	password := flag.String("password", "fox3", "the password for CLI RPC clients and the REST API")
-	secure := flag.Bool("secure", false, "Require client TLS certificate verification")
-	tlsKey := flag.String("tlsKey", "", "TLS private key file path")
-	tlsCert := flag.String("tlsCert", "", "TLS certificate file path")
-	tlsCA := flag.String("tlsCA", "", "TLS Certificate Authority file path to verify client certificates")
-	debug := flag.Bool("debug", false, "Enable debug logging")
-	trace := flag.Bool("trace", false, "Enable trace logging")
-	extra := flag.Bool("extra", false, "Enable extra debug logging")
-	restAddr := flag.String("rest", "0.0.0.0:8080", "The address for the REST API")
-	v := flag.Bool("version", false, "Print the version number and exit")
+	password := flag.String("password", "fox3", "password for the REST API and agent listeners")
+	restAddr := flag.String("rest", "0.0.0.0:8080", "address the REST API + WebSocket server binds to")
+	debug := flag.Bool("debug", false, "enable debug logging")
+	trace := flag.Bool("trace", false, "enable trace logging")
+	extra := flag.Bool("extra", false, "enable extra-debug logging (dumps HTTP headers per connection)")
+	v := flag.Bool("version", false, "print version and exit")
 	flag.Parse()
 
 	if *v {
@@ -77,24 +71,12 @@ func main() {
 		slog.Warn("Using default password — change with --password for production use")
 	}
 
-	// Start REST API server in background
+	// Start REST API + WebSocket server
 	restServer := rest.NewRestServer(*password)
 	go func() {
 		slog.Info("Starting REST API server", "addr", *restAddr)
 		if err := restServer.Run(*restAddr); err != nil {
 			slog.Error("REST server error", "error", err)
-		}
-	}()
-
-	// Start gRPC service in background
-	go func() {
-		service, err := rpc.NewRPCService(*password, *secure, *tlsCert, *tlsKey, *tlsCA)
-		if err != nil {
-			slog.Error("gRPC service creation error", "error", err)
-			return
-		}
-		if err = service.Run(*addr); err != nil {
-			slog.Error("gRPC server error", "error", err)
 		}
 	}()
 

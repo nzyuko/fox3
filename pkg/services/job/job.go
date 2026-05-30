@@ -853,7 +853,10 @@ func (s *Service) Handler(agentJobs []jobs.Job) error {
 		// Skip agent lookup and info tracking — these are high-frequency packets.
 		if job.Type == jobs.SOCKS {
 			sp, ok := job.Payload.(jobs.Socks)
-			if ok {
+			if !ok {
+				slog.Warn("SOCKS type assertion failed", "payload_type", fmt.Sprintf("%T", job.Payload), "agent", job.AgentID)
+			} else {
+				slog.Debug("SOCKS job received", "conn_id", sp.ID, "data_len", len(sp.Data), "close", sp.Close, "hvnc_known", hvnc.IsKnown(sp.ID))
 				if hvnc.IsKnown(sp.ID) {
 					hvnc.In(job)
 				} else if rportfwd.IsKnown(sp.ID) {

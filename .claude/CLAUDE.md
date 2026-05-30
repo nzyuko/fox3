@@ -2,7 +2,7 @@
 
 ## What this repo is
 
-The C2 teamserver. A Go application serving a React frontend, HTTPS listener for agent checkins, gRPC API for CLI clients, and SQLite database for state. Forked from Merlin v2, fully renamed to fox3/nzyuko.
+The C2 teamserver. A Go application serving a React frontend, HTTPS listener for agent checkins, WebSocket API for operators, and SQLite database for state. Forked from Merlin v2, fully renamed to fox3/nzyuko. gRPC has been removed — the WebSocket API is the only operator interface.
 
 ## Critical rules
 
@@ -12,9 +12,7 @@ The C2 teamserver. A Go application serving a React frontend, HTTPS listener for
 
 3. **fox3-message is vendored.** Originally an external module (`github.com/Ne0nd0g/merlin-message`). Now internal at `pkg/fox3-message/`. Its own `go.mod` was removed. All imports: `github.com/nzyuko/fox3/v2/pkg/fox3-message`.
 
-4. **Protobuf code is manually maintained.** `pkg/rpc/rpc.proto` defines `service Fox3`, but `rpc_grpc.pb.go` was sed-renamed from Merlin types. If regenerating: `protoc --go_out=. --go-grpc_out=. pkg/rpc/rpc.proto`
-
-5. **Frontend is pre-built.** `frontend/dist/` has compiled React assets. REST server serves them. Rebuild after src changes: `cd frontend && npm install && npm run build`
+4. **Frontend is pre-built.** `frontend/dist/` has compiled React assets. REST server serves them. Rebuild after src changes: `cd frontend && npm install && npm run build`
 
 ## Deep architecture
 
@@ -176,25 +174,6 @@ SQLite via GORM. Auto-created at `data/fox3.db`.
 
 `db.InitDB()` + `db.AutoMigrate()` called in `main.go` at startup.
 
-### gRPC service (pkg/services/rpc/rpc.go)
-
-For CLI clients (not used by agents). Implements the `Fox3Server` interface from `rpc_grpc.pb.go`:
-
-```
-type Server struct {
-    pb.UnimplementedFox3Server    // ← was Merlin, manually renamed
-    messageChan map[UUID]chan *pb.Message
-    ls          listeners.ListenerService
-    clientRepo  client.Repository
-    messageRepo message.Repository
-    agentService *agent.Service
-}
-```
-
-**Thread pool shim:** The gRPC server generates its own TLS certificate at startup with `Organization: Fox3` (was "Merlin" — renamed).
-
-**Listen stream:** `Server.Listen()` uses `pb.Fox3_ListenServer` (was `Merlin_ListenServer`) for server-side streaming to CLI clients.
-
 ### Frontend (frontend/)
 
 React 19 + TypeScript + Material UI + Tailwind. Vite build.
@@ -257,7 +236,7 @@ go vet ./...                     # Lint
 ## What NOT to do
 
 - Don't reintroduce "merlin"/"Merlin"/"Ne0nd0g"
-- Don't edit `rpc_grpc.pb.go` without understanding it was manually renamed
+- Don't re-add gRPC — the WebSocket API is the only operator interface
 - Don't remove `pkg/fox3-message/` — it's vendored, not external
 - Don't change message types without updating the Rust agent
 - Don't commit `fox3_server.exe`, `data/` directory, or `node_modules/`
@@ -266,5 +245,5 @@ go vet ./...                     # Lint
 ## Known issues (non-blocking, from original Merlin)
 
 - `go vet`: non-constant format strings in opaque/memory packages — cosmetic
-- `go vet`: sync.Map copy in DNS/DoH server packages — need pointer refactor
-- `simple_agent/` is a Go reference agent for testing, not production
+- `go vet`: sync.Map copy in DNS/DoH server packages — need pointer refactor once those listeners are wired
+- `simple_agent/` is a Rust reference agent for testing, not production
