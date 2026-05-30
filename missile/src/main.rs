@@ -30,7 +30,7 @@ macro_rules! dbg_print {
     };
 }
 
-/// Fox3 simple_agent.
+/// Missile.
 ///
 /// Implements jittered-sleep + async tunnel mode: SOCKS, rportfwd, and
 /// file transfers all run independently of the beacon sleep interval.
@@ -104,7 +104,7 @@ fn main() -> anyhow::Result<()> {
     // Pre-generate agent ID so DNS transport can embed it in subdomains.
     let agent_id = uuid::Uuid::new_v4();
 
-    println!("[*] Fox3 simple_agent starting");
+    println!("[*] Missile starting");
     println!("[*] Transport   : {}", args.transport);
     println!("[*] Sleep       : {}s ±{}%", args.sleep, args.jitter);
     println!("[*] Tunnel poll : {}ms", args.tunnel_poll);

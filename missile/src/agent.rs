@@ -107,7 +107,7 @@ use rand::Rng;
 use serde_json::Value;
 use uuid::Uuid;
 
-use simple_agent::exec;
+use missile::exec;
 use crate::ekko::EkkoSleep;
 use crate::hvnc::HvncSession;
 use crate::pipeline;
@@ -942,7 +942,7 @@ impl Agent {
         let payload = if include_info {
             Some(serde_json::to_value(AgentInfo {
                 version:    Some("0.1.0".into()),
-                build:      Some("simple_agent".into()),
+                build:      Some("missile".into()),
                 waittime:   Some(format!("{}s", self.sleep.as_secs())),
                 paddingmax: Some(self.padding_max as i32),
                 maxretry:   Some(self.max_retry as i32),
@@ -999,7 +999,7 @@ impl Agent {
     fn build_agentinfo_result(&self, job: &Job) -> Job {
         let info = AgentInfo {
             version:    Some("0.1.0".into()),
-            build:      Some("simple_agent".into()),
+            build:      Some("missile".into()),
             waittime:   Some(format!("{}s", self.sleep.as_secs())),
             paddingmax: Some(self.padding_max as i32),
             maxretry:   Some(self.max_retry as i32),
@@ -1152,7 +1152,7 @@ fn native_cmd(cmd: &str, args: &[String]) -> anyhow::Result<String> {
             Ok(out)
         }
 
-        _ => simple_agent::commands::dispatch(cmd, args),
+        _ => missile::commands::dispatch(cmd, args),
     }
 }
 
@@ -1379,7 +1379,7 @@ fn module_cmd(cmd: &str, args: &[String]) -> anyhow::Result<String> {
             }
         }
 
-        _ => simple_agent::commands::dispatch(cmd, args),
+        _ => missile::commands::dispatch(cmd, args),
     }
 }
 

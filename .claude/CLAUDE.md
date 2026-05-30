@@ -246,4 +246,4 @@ go vet ./...                     # Lint
 
 - `go vet`: non-constant format strings in opaque/memory packages — cosmetic
 - `go vet`: sync.Map copy in DNS/DoH server packages — need pointer refactor once those listeners are wired
-- `simple_agent/` is a Rust reference agent for testing, not production
+- `missile/` is a Rust reference agent for testing, not production

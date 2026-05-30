@@ -9,7 +9,7 @@
 
 // We need access to the crate's dispatch function.
 // Since this is a [[bin]] in the same crate, we can use crate-level paths.
-use simple_agent::commands::dispatch;
+use missile::commands::dispatch;
 
 use std::env;
 use std::time::Instant;
