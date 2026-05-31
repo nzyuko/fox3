@@ -13,3 +13,6 @@ data/
 *.key
 *.pem
 .env
+
+# Decoupled to https://github.com/nzyuko/missile
+missile/
