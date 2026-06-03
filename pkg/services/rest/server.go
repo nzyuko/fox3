@@ -6,6 +6,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"path"
 	"path/filepath"
 	"strings"
 	"time"
@@ -117,8 +118,7 @@ func (s *Server) Run(addr string) error {
 			}
 		}
 	}
-	fs := http.FileServer(http.Dir(frontendDir))
-	mux.Handle("/", fs)
+	mux.Handle("/", spaFileServer(frontendDir))
 
 	handler := corsMiddleware(mux)
 
@@ -136,4 +136,42 @@ func (s *Server) Run(addr string) error {
 		return nil
 	}
 	return err
+}
+
+func spaFileServer(frontendDir string) http.Handler {
+	root := http.Dir(frontendDir)
+	fs := http.FileServer(root)
+
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet && r.Method != http.MethodHead {
+			fs.ServeHTTP(w, r)
+			return
+		}
+
+		cleanPath := path.Clean("/" + r.URL.Path)
+		filePath := strings.TrimPrefix(cleanPath, "/")
+		if filePath == "." || filePath == "" {
+			fs.ServeHTTP(w, r)
+			return
+		}
+
+		if file, err := root.Open(filePath); err == nil {
+			if stat, statErr := file.Stat(); statErr == nil && !stat.IsDir() {
+				_ = file.Close()
+				fs.ServeHTTP(w, r)
+				return
+			}
+			_ = file.Close()
+		}
+
+		if strings.HasPrefix(r.URL.Path, "/assets/") || strings.Contains(path.Base(r.URL.Path), ".") {
+			http.NotFound(w, r)
+			return
+		}
+
+		indexReq := r.Clone(r.Context())
+		indexReq.URL.Path = "/"
+		indexReq.URL.RawPath = ""
+		fs.ServeHTTP(w, indexReq)
+	})
 }

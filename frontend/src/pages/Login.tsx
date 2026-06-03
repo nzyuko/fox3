@@ -4,9 +4,9 @@ import MissileIcon from '../components/MissileIcon';
 import axios from 'axios';
 import { Box, Button, TextField, Typography, Paper, Alert, CircularProgress } from '@mui/material';
 import { wsDisconnect } from '../hooks/useWebSocket';
+import { API_ORIGIN } from '../api';
 
-// Ensure this matches the REST API url configured in api.ts
-const API_BASE = 'http://127.0.0.1:8080/api';
+const API_BASE = `${API_ORIGIN}/api`;
 
 export default function Login() {
     const [password, setPassword] = useState('');

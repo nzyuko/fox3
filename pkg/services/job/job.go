@@ -935,14 +935,21 @@ func (s *Service) Handler(agentJobs []jobs.Job) error {
 
 				// Check if this is an hvnc_start result containing a conn_id
 				s.handleHvncResult(job.AgentID, result.Stdout)
-
-				// Store output for REST API
-				_ = s.jobRepo.UpdateOutput(job.ID, result.Stdout)
 			}
 			if len(result.Stderr) > 0 {
 				a.Log(fmt.Sprintf("Command Results (stderr):\r\n%s", result.Stderr))
 				userMessage = message.NewMessage(message.Warn, result.Stderr)
 				s.messageRepo.Add(userMessage)
+			}
+			if len(result.Stdout) > 0 || len(result.Stderr) > 0 {
+				output := result.Stdout
+				if len(result.Stderr) > 0 {
+					if len(output) > 0 && !strings.HasSuffix(output, "\n") {
+						output += "\n"
+					}
+					output += result.Stderr
+				}
+				_ = s.jobRepo.UpdateOutput(job.ID, output)
 			}
 		case jobs.AGENTINFO:
 			ai, aiOk := job.Payload.(messages.AgentInfo)
